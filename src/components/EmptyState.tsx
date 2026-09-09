@@ -1,4 +1,4 @@
-import { FileText, Plus } from "lucide-react";
+import { FileText } from "lucide-react";
 
 function EmptyState() {
   return (
@@ -12,10 +12,6 @@ function EmptyState() {
       <p className="mt-2 max-w-xs text-sm leading-6 text-slate-500">
         Add your first transaction to start tracking your finances.
       </p>
-      <button className="mt-6 inline-flex items-center gap-2 rounded-xl bg-slate-950 px-4 py-2.5 text-sm font-semibold text-white">
-        <Plus size={17} />
-        Add Transaction
-      </button>
     </section>
   );
 }

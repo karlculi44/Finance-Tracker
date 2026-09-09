@@ -1,9 +1,9 @@
 import { type FinanceSummaryType } from "../types/FinanceSummary";
 import { CreditCard } from "lucide-react";
+import { useState } from "react";
 import SummaryCards from "../components/SummaryCards";
 import Header from "../components/Header";
 import Transactions from "../components/Transactions";
-import EmptyState from "../components/EmptyState";
 import TransactionModal from "../components/TransactionModal";
 
 function MainLayout() {
@@ -13,10 +13,19 @@ function MainLayout() {
     expenses: 13000,
   };
 
+  const [isTransactionModalOpen, setIsTransactionModalOpen] = useState(false);
+
+  const handleOpenTransactionModal = () => {
+    setIsTransactionModalOpen(true);
+  };
+  const handleCloseTransactionModal = () => {
+    setIsTransactionModalOpen(false);
+  };
+
   return (
     <main className="min-h-screen bg-[#f7f8fa] text-slate-950">
       <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8 lg:py-12">
-        <Header />
+        <Header onAddTransaction={handleOpenTransactionModal} />
         <div className="mt-8 grid gap-6 lg:mt-10 lg:grid-cols-[minmax(0,1fr)_300px]">
           <div className="space-y-6">
             <SummaryCards summary={financeSummary} />
@@ -42,10 +51,11 @@ function MainLayout() {
             </div>
           </aside>
         </div>
-        <div className="hidden" aria-hidden="true">
-          <EmptyState />
-          <TransactionModal />
-        </div>
+
+        <TransactionModal
+          isOpen={isTransactionModalOpen}
+          onClose={handleCloseTransactionModal}
+        />
       </div>
     </main>
   );

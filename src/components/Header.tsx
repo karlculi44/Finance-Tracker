@@ -1,6 +1,10 @@
 import { Plus } from "lucide-react";
 
-function Header() {
+type HeaderProps = {
+  onAddTransaction: () => void;
+};
+
+function Header({ onAddTransaction }: HeaderProps) {
   return (
     <header className="flex flex-col gap-5 sm:flex-row sm:items-start sm:justify-between">
       <div>
@@ -14,7 +18,10 @@ function Header() {
           Keep track of your income and expenses.
         </p>
       </div>
-      <button className="inline-flex w-fit items-center justify-center gap-2 rounded-xl bg-slate-950 px-4 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-slate-800">
+      <button
+        onClick={onAddTransaction}
+        className="inline-flex w-fit items-center justify-center gap-2 rounded-xl bg-slate-950 px-4 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-slate-800"
+      >
         <Plus size={18} strokeWidth={2.5} />
         Add Transaction
       </button>
