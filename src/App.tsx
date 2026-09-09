@@ -1,10 +1,7 @@
 import {
-  ArrowDownLeft,
-  ArrowUpRight,
   Banknote,
   CalendarDays,
   Car,
-  CircleDollarSign,
   CreditCard,
   FileText,
   MoreHorizontal,
@@ -17,6 +14,7 @@ import {
   Wifi,
   X,
 } from "lucide-react";
+import SummaryCards from "./components/SummaryCards";
 
 function Header() {
   return (
@@ -37,63 +35,6 @@ function Header() {
         Add Transaction
       </button>
     </header>
-  );
-}
-
-function SummaryCard(
-  props = {
-    label: "",
-    value: "",
-    detail: "",
-    icon: <CircleDollarSign size={20} />,
-    tone: "",
-  },
-) {
-  const { label, value, detail, icon, tone } = props;
-  return (
-    <article className="rounded-2xl border border-slate-200 bg-white p-5 shadow-[0_8px_24px_rgba(15,23,42,0.04)]">
-      <div className="flex items-start justify-between">
-        <div>
-          <p className="text-sm font-medium text-slate-500">{label}</p>
-          <p className="mt-3 text-2xl font-bold tracking-tight text-slate-950">
-            {value}
-          </p>
-        </div>
-        <div className={`rounded-xl p-2.5 ${tone}`}>{icon}</div>
-      </div>
-      <p className="mt-4 text-xs font-medium text-slate-400">{detail}</p>
-    </article>
-  );
-}
-
-function SummaryCards() {
-  return (
-    <section
-      className="grid gap-4 md:grid-cols-3"
-      aria-label="Financial summary"
-    >
-      <SummaryCard
-        label="Balance"
-        value="₱12,450.00"
-        detail="Current balance"
-        icon={<CircleDollarSign size={20} />}
-        tone="bg-slate-100 text-slate-700"
-      />
-      <SummaryCard
-        label="Income"
-        value="₱25,000.00"
-        detail="This month"
-        icon={<ArrowUpRight size={20} />}
-        tone="bg-emerald-50 text-emerald-600"
-      />
-      <SummaryCard
-        label="Expenses"
-        value="₱12,550.00"
-        detail="This month"
-        icon={<ArrowDownLeft size={20} />}
-        tone="bg-rose-50 text-rose-500"
-      />
-    </section>
   );
 }
 
