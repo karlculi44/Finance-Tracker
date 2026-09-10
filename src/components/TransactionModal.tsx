@@ -1,10 +1,11 @@
-import { useState, type ChangeEvent } from "react";
+import { useState, type ChangeEvent, type FormEvent } from "react";
 import { X } from "lucide-react";
 import type {
   TransactionCategory,
   TransactionForm,
   TransactionType,
 } from "../types/Transaction";
+import validateTransactionForm from "../utils/validateTransactionForm";
 
 type TransactionModalProps = {
   isOpen: boolean;
@@ -26,6 +27,7 @@ function TransactionModal({
     category: "Other",
     date: new Date(),
   });
+  const [error, setError] = useState<string | null>(null);
 
   const handleInputChange = (
     event: ChangeEvent<HTMLInputElement | HTMLSelectElement>,
@@ -41,12 +43,22 @@ function TransactionModal({
     if (name === "date") updatedForm.date = new Date(`${value}T00:00:00`);
 
     setForm(updatedForm);
+    setError(null);
     onChange(updatedForm);
   };
 
-  const handleAddTransaction = () => {
+  const handleAddTransaction = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
+    const validationError = validateTransactionForm(form);
+    if (validationError) {
+      setError(validationError);
+      return;
+    }
+
     onSubmit();
     onClose();
+    setError(null);
     setForm({
       description: "",
       amount: 0,
@@ -77,13 +89,14 @@ function TransactionModal({
             <X size={18} />
           </button>
         </div>
-        <div className="mt-6 grid gap-4">
+        <form className="mt-6 grid gap-4" onSubmit={handleAddTransaction}>
           <label className="grid gap-2 text-sm font-semibold text-slate-700">
             Description
             <input
               name="description"
               value={form.description}
               onChange={handleInputChange}
+              aria-invalid={Boolean(error && !form.description.trim())}
               className="rounded-xl border border-slate-200 px-3.5 py-2.5 font-normal outline-none placeholder:text-slate-400"
               placeholder="e.g. Grocery shopping"
             />
@@ -95,6 +108,9 @@ function TransactionModal({
               type="number"
               value={form.amount || ""}
               onChange={handleInputChange}
+              aria-invalid={Boolean(
+                error && (!Number.isFinite(form.amount) || form.amount <= 0),
+              )}
               className="rounded-xl border border-slate-200 px-3.5 py-2.5 font-normal outline-none placeholder:text-slate-400"
               placeholder="₱0.00"
             />
@@ -143,25 +159,33 @@ function TransactionModal({
                 type="date"
                 value={form.date.toISOString().slice(0, 10)}
                 onChange={handleInputChange}
+                aria-invalid={Boolean(
+                  error && Number.isNaN(form.date.getTime()),
+                )}
                 className="w-full rounded-xl border border-slate-200 px-3.5 py-2.5 font-normal outline-none"
               />
             </div>
           </label>
-        </div>
-        <div className="mt-6 flex justify-end gap-3">
-          <button
-            className="rounded-xl px-4 py-2.5 text-sm font-semibold text-slate-500 hover:bg-slate-100"
-            onClick={onClose}
-          >
-            Cancel
-          </button>
-          <button
-            className="rounded-xl bg-slate-950 px-4 py-2.5 text-sm font-semibold text-white"
-            onClick={handleAddTransaction}
-          >
-            Add Transaction
-          </button>
-        </div>
+          {error && (
+            <p className="mt-4 text-sm font-medium text-rose-600" role="alert">
+              {error}
+            </p>
+          )}
+          <div className="mt-6 flex justify-end gap-3">
+            <button
+              className="rounded-xl px-4 py-2.5 text-sm font-semibold text-slate-500 hover:bg-slate-100"
+              onClick={onClose}
+            >
+              Cancel
+            </button>
+            <button
+              type="submit"
+              className="rounded-xl bg-slate-950 px-4 py-2.5 text-sm font-semibold text-white"
+            >
+              Add Transaction
+            </button>
+          </div>
+        </form>
       </div>
     </div>
   );
