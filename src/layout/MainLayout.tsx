@@ -1,23 +1,55 @@
-import { type FinanceSummaryType } from "../types/FinanceSummary";
 import { CreditCard } from "lucide-react";
 import { useState } from "react";
+import type { TransactionForm, Transaction } from "../types/Transaction";
+import { v4 as uuidv4 } from "uuid";
+import {
+  getTransactionsFromStorage,
+  saveTransactionsToStorage,
+} from "../utils/transactionStorage";
 import SummaryCards from "../components/SummaryCards";
 import Header from "../components/Header";
 import Transactions from "../components/Transactions";
 import TransactionModal from "../components/TransactionModal";
 
 function MainLayout() {
-  const financeSummary: FinanceSummaryType = {
-    balance: 12500,
-    income: 55000,
-    expenses: 13000,
+  const [isTransactionModalOpen, setIsTransactionModalOpen] = useState(false);
+  const [transactions, setTransactions] = useState<Transaction[]>(
+    getTransactionsFromStorage,
+  );
+
+  const [transactionForm, setTransactionForm] =
+    useState<TransactionForm | null>({
+      description: "",
+      amount: 0,
+      type: "Income",
+      category: "other",
+      date: new Date(),
+    });
+
+  const handleFormChange = (form: TransactionForm) => {
+    setTransactionForm(form);
   };
 
-  const [isTransactionModalOpen, setIsTransactionModalOpen] = useState(false);
+  const handleFormSubmit = () => {
+    if (!transactionForm) return;
+
+    const newTransactions = [
+      ...transactions,
+      {
+        ...transactionForm,
+        id: uuidv4(),
+      },
+    ];
+
+    setTransactions(newTransactions);
+    saveTransactionsToStorage(newTransactions);
+    console.log(localStorage);
+  };
 
   const handleOpenTransactionModal = () => {
     setIsTransactionModalOpen(true);
   };
+
   const handleCloseTransactionModal = () => {
     setIsTransactionModalOpen(false);
   };
@@ -28,7 +60,7 @@ function MainLayout() {
         <Header onAddTransaction={handleOpenTransactionModal} />
         <div className="mt-8 grid gap-6 lg:mt-10 lg:grid-cols-[minmax(0,1fr)_300px]">
           <div className="space-y-6">
-            <SummaryCards summary={financeSummary} />
+            <SummaryCards />
             <Transactions />
           </div>
           <aside className="hidden rounded-2xl border border-slate-200 bg-slate-50/70 p-5 lg:block">
@@ -55,6 +87,8 @@ function MainLayout() {
         <TransactionModal
           isOpen={isTransactionModalOpen}
           onClose={handleCloseTransactionModal}
+          onChange={handleFormChange}
+          onSubmit={handleFormSubmit}
         />
       </div>
     </main>

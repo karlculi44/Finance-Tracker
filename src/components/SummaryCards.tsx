@@ -1,9 +1,6 @@
 import SummaryCard from "./SummaryCard";
 import { CircleDollarSign, ArrowUpRight, ArrowDownLeft } from "lucide-react";
-import type {
-  FinanceSummaryType,
-  SummaryCardsDataType,
-} from "../types/FinanceSummary";
+import type { SummaryCardsDataType } from "../types/FinanceSummary";
 
 const SummaryCardsData: SummaryCardsDataType[] = [
   {
@@ -29,32 +26,22 @@ const SummaryCardsData: SummaryCardsDataType[] = [
   },
 ];
 
-function SummaryCards({ summary }: { summary: FinanceSummaryType }) {
+function SummaryCards() {
   return (
     <section
       className="grid gap-4 md:grid-cols-3"
       aria-label="Financial summary"
     >
-      {SummaryCardsData.map(
-        ({ label, value, detail, icon, tone }) => (
-          (value =
-            label === "Balance"
-              ? summary.balance
-              : label === "Income"
-                ? summary.income
-                : summary.expenses),
-          (
-            <SummaryCard
-              key={label}
-              label={label}
-              value={value}
-              detail={detail}
-              icon={icon}
-              tone={tone}
-            />
-          )
-        ),
-      )}
+      {SummaryCardsData.map(({ label, value, detail, icon, tone }) => (
+        <SummaryCard
+          key={label}
+          label={label}
+          value={value}
+          detail={detail}
+          icon={icon}
+          tone={tone}
+        />
+      ))}
     </section>
   );
 }
