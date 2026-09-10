@@ -42,6 +42,14 @@ function MainLayout() {
     setIsTransactionModalOpen(true);
   };
 
+  const handleDeleteTransaction = (transactionId: string) => {
+    const newTransactions = transactions.filter(
+      (transaction) => transaction.id !== transactionId,
+    );
+    setTransactions(newTransactions);
+    saveTransactionsToStorage(newTransactions);
+  };
+
   const handleCloseTransactionModal = () => {
     setIsTransactionModalOpen(false);
     setTransactionToEdit(null);
@@ -57,6 +65,7 @@ function MainLayout() {
             <Transactions
               transactions={transactions}
               onEdit={handleEditTransaction}
+              onDelete={handleDeleteTransaction}
             />
           </div>
           <aside className="hidden rounded-2xl border border-slate-200 bg-slate-50/70 p-5 lg:block">

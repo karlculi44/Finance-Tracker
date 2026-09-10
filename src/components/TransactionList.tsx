@@ -4,9 +4,11 @@ import TransactionItem from "./TransactionItem";
 function TransactionList({
   transactions,
   onEdit,
+  onDelete,
 }: {
   transactions: Transaction[];
   onEdit: (transaction: Transaction) => void;
+  onDelete: (transactionId: string) => void;
 }) {
   return (
     <div className="mt-2">
@@ -16,6 +18,7 @@ function TransactionList({
           {...transaction}
           isPositive={transaction.type === "Income"}
           onEdit={onEdit}
+          onDelete={onDelete}
         />
       ))}
     </div>

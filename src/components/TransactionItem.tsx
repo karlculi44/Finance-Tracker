@@ -21,6 +21,7 @@ import formatCurrency from "../utils/formatCurrency";
 interface TransactionItemProps extends Transaction {
   isPositive: boolean;
   onEdit: (transaction: Transaction) => void;
+  onDelete: (transactionId: string) => void;
 }
 
 const categoryIcon: Record<
@@ -49,6 +50,7 @@ function TransactionItem({
   type,
   isPositive,
   onEdit,
+  onDelete,
 }: TransactionItemProps) {
   const { icon: CategoryIcon, tone: iconTone } = categoryIcon[category];
 
@@ -88,6 +90,7 @@ function TransactionItem({
           <Pencil size={15} />
         </button>
         <button
+          onClick={() => onDelete(id)}
           aria-label={`Delete ${description}`}
           className="rounded-lg p-2 text-slate-300 transition hover:bg-rose-50 hover:text-rose-500"
         >

@@ -7,9 +7,11 @@ import EmptyState from "./EmptyState";
 function Transactions({
   transactions,
   onEdit,
+  onDelete,
 }: {
   transactions: Transaction[];
   onEdit: (transaction: Transaction) => void;
+  onDelete: (transationId: string) => void;
 }) {
   return (
     <section className="rounded-2xl border border-slate-200 bg-white shadow-[0_8px_24px_rgba(15,23,42,0.04)]">
@@ -34,7 +36,11 @@ function Transactions({
           />
         </label>
         {transactions.length > 0 ? (
-          <TransactionList transactions={transactions} onEdit={onEdit} />
+          <TransactionList
+            transactions={transactions}
+            onEdit={onEdit}
+            onDelete={onDelete}
+          />
         ) : (
           <EmptyState />
         )}
