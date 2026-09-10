@@ -22,7 +22,7 @@ function MainLayout() {
       description: "",
       amount: 0,
       type: "Income",
-      category: "other",
+      category: "Other",
       date: new Date(),
     });
 
@@ -43,7 +43,6 @@ function MainLayout() {
 
     setTransactions(newTransactions);
     saveTransactionsToStorage(newTransactions);
-    console.log(localStorage);
   };
 
   const handleOpenTransactionModal = () => {
@@ -61,7 +60,7 @@ function MainLayout() {
         <div className="mt-8 grid gap-6 lg:mt-10 lg:grid-cols-[minmax(0,1fr)_300px]">
           <div className="space-y-6">
             <SummaryCards />
-            <Transactions />
+            <Transactions transactions={transactions} />
           </div>
           <aside className="hidden rounded-2xl border border-slate-200 bg-slate-50/70 p-5 lg:block">
             <div className="flex items-center gap-2 text-sm font-bold text-slate-800">

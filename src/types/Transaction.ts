@@ -1,17 +1,17 @@
 type TransactionType = "Income" | "Expense";
 
 type TransactionCategory =
-  | "food"
-  | "transportation"
-  | "shopping"
-  | "bills"
-  | "entertainment"
-  | "health"
-  | "education"
-  | "housing"
-  | "travel"
-  | "salary"
-  | "other";
+  | "Food"
+  | "Transportation"
+  | "Shopping"
+  | "Bills"
+  | "Entertainment"
+  | "Health"
+  | "Education"
+  | "Housing"
+  | "Travel"
+  | "Salary"
+  | "Other";
 
 type TransactionForm = {
   description: string;

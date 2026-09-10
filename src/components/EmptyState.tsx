@@ -2,7 +2,7 @@ import { FileText } from "lucide-react";
 
 function EmptyState() {
   return (
-    <section className="flex flex-col items-center justify-center rounded-2xl border border-dashed border-slate-300 bg-white px-6 py-16 text-center">
+    <section className="flex flex-col items-center justify-center rounded-2xl border border-dashed border-slate-300 bg-white my-2 px-6 py-16 text-center">
       <div className="rounded-2xl bg-slate-100 p-4 text-slate-500">
         <FileText size={25} />
       </div>

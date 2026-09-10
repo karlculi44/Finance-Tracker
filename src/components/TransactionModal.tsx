@@ -1,5 +1,5 @@
 import { useState, type ChangeEvent } from "react";
-import { CalendarDays, X } from "lucide-react";
+import { X } from "lucide-react";
 import type {
   TransactionCategory,
   TransactionForm,
@@ -23,7 +23,7 @@ function TransactionModal({
     description: "",
     amount: 0,
     type: "Expense",
-    category: "other",
+    category: "Other",
     date: new Date(),
   });
 
@@ -51,7 +51,7 @@ function TransactionModal({
       description: "",
       amount: 0,
       type: "Expense",
-      category: "other",
+      category: "Other",
       date: new Date(),
     });
   };
@@ -120,28 +120,24 @@ function TransactionModal({
                 onChange={handleInputChange}
                 className="appearance-none rounded-xl border border-slate-200 bg-white px-3.5 py-2.5 font-normal outline-none"
               >
-                <option value="other">Select category</option>
-                <option value="food">Food</option>
-                <option value="transportation">Transportation</option>
-                <option value="shopping">Shopping</option>
-                <option value="bills">Bills</option>
-                <option value="entertainment">Entertainment</option>
-                <option value="health">Health</option>
-                <option value="education">Education</option>
-                <option value="housing">Housing</option>
-                <option value="travel">Travel</option>
-                <option value="salary">Salary</option>
-                <option value="other">Other</option>
+                <option value="Other">Select category</option>
+                <option value="Food">Food</option>
+                <option value="Transportation">Transportation</option>
+                <option value="Shopping">Shopping</option>
+                <option value="Bills">Bills</option>
+                <option value="Entertainment">Entertainment</option>
+                <option value="Health">Health</option>
+                <option value="Education">Education</option>
+                <option value="Housing">Housing</option>
+                <option value="Travel">Travel</option>
+                <option value="Salary">Salary</option>
+                <option value="Other">Other</option>
               </select>
             </label>
           </div>
           <label className="grid gap-2 text-sm font-semibold text-slate-700">
             Date
             <div className="relative">
-              <CalendarDays
-                size={16}
-                className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-slate-400"
-              />
               <input
                 name="date"
                 type="date"
