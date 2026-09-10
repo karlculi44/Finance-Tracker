@@ -1,20 +1,43 @@
-import { Pencil, Trash2, MoreHorizontal, CircleDollarSign } from "lucide-react";
-import type { Transaction } from "../types/Transaction";
+import {
+  Banknote,
+  Car,
+  CircleDollarSign,
+  FileText,
+  GraduationCap,
+  HeartPulse,
+  House,
+  MoreHorizontal,
+  Pencil,
+  Plane,
+  Receipt,
+  ShoppingBag,
+  Trash2,
+  Utensils,
+  type LucideIcon,
+} from "lucide-react";
+import type { Transaction, TransactionCategory } from "../types/Transaction";
 import formatCurrency from "../utils/formatCurrency";
 
 interface TransactionItemProps extends Transaction {
   isPositive: boolean;
 }
 
-// type TransactionItemProps = {
-//   icon: ReactNode;
-//   iconTone: string;
-//   title: string;
-//   category: string;
-//   date: string;
-//   amount: number;
-//   positive: boolean;
-// };
+const categoryIcon: Record<
+  TransactionCategory,
+  { icon: LucideIcon; tone: string }
+> = {
+  Food: { icon: Utensils, tone: "bg-orange-50 text-orange-500" },
+  Transportation: { icon: Car, tone: "bg-sky-50 text-sky-600" },
+  Shopping: { icon: ShoppingBag, tone: "bg-violet-50 text-violet-500" },
+  Bills: { icon: Receipt, tone: "bg-amber-50 text-amber-600" },
+  Entertainment: { icon: FileText, tone: "bg-fuchsia-50 text-fuchsia-500" },
+  Health: { icon: HeartPulse, tone: "bg-rose-50 text-rose-500" },
+  Education: { icon: GraduationCap, tone: "bg-indigo-50 text-indigo-600" },
+  Housing: { icon: House, tone: "bg-lime-50 text-lime-600" },
+  Travel: { icon: Plane, tone: "bg-cyan-50 text-cyan-600" },
+  Salary: { icon: Banknote, tone: "bg-emerald-50 text-emerald-600" },
+  Other: { icon: CircleDollarSign, tone: "bg-slate-100 text-slate-600" },
+};
 
 function TransactionItem({
   description,
@@ -23,16 +46,14 @@ function TransactionItem({
   date,
   isPositive,
 }: TransactionItemProps) {
-  const iconTone: string = isPositive
-    ? "bg-emerald-50 text-emerald-600"
-    : "bg-rose-50 text-rose-500";
+  const { icon: CategoryIcon, tone: iconTone } = categoryIcon[category];
 
   return (
     <div className="group flex items-center gap-3 border-b border-slate-100 py-4 last:border-0 sm:gap-4">
       <div
         className={`flex size-10 shrink-0 items-center justify-center rounded-xl ${iconTone}`}
       >
-        <CircleDollarSign size={18} />
+        <CategoryIcon size={18} />
       </div>
       <div className="min-w-0 flex-1">
         <p className="truncate text-sm font-semibold text-slate-800">
@@ -50,7 +71,7 @@ function TransactionItem({
       <p
         className={`whitespace-nowrap text-sm font-bold ${isPositive ? "text-emerald-600" : "text-slate-800"}`}
       >
-        {formatCurrency(amount)}
+        {isPositive ? "+" : "-"} {formatCurrency(amount)}
       </p>
       <div className="hidden items-center gap-1 sm:flex">
         <button
