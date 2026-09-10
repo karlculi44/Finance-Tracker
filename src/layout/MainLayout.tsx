@@ -16,41 +16,35 @@ function MainLayout() {
   const [transactions, setTransactions] = useState<Transaction[]>(
     getTransactionsFromStorage,
   );
+  const [transactionToEdit, setTransactionToEdit] =
+    useState<Transaction | null>(null);
 
-  const [transactionForm, setTransactionForm] =
-    useState<TransactionForm | null>({
-      description: "",
-      amount: 0,
-      type: "Income",
-      category: "Other",
-      date: new Date(),
-    });
-
-  const handleFormChange = (form: TransactionForm) => {
-    setTransactionForm(form);
-  };
-
-  const handleFormSubmit = () => {
-    if (!transactionForm) return;
-
-    const newTransactions = [
-      ...transactions,
-      {
-        ...transactionForm,
-        id: uuidv4(),
-      },
-    ];
+  const handleFormSubmit = (form: TransactionForm) => {
+    const newTransactions = transactionToEdit
+      ? transactions.map((transaction) =>
+          transaction.id === transactionToEdit.id
+            ? { ...form, id: transaction.id }
+            : transaction,
+        )
+      : [...transactions, { ...form, id: uuidv4() }];
 
     setTransactions(newTransactions);
     saveTransactionsToStorage(newTransactions);
   };
 
   const handleOpenTransactionModal = () => {
+    setTransactionToEdit(null);
+    setIsTransactionModalOpen(true);
+  };
+
+  const handleEditTransaction = (transaction: Transaction) => {
+    setTransactionToEdit(transaction);
     setIsTransactionModalOpen(true);
   };
 
   const handleCloseTransactionModal = () => {
     setIsTransactionModalOpen(false);
+    setTransactionToEdit(null);
   };
 
   return (
@@ -60,7 +54,10 @@ function MainLayout() {
         <div className="mt-8 grid gap-6 lg:mt-10 lg:grid-cols-[minmax(0,1fr)_300px]">
           <div className="space-y-6">
             <SummaryCards />
-            <Transactions transactions={transactions} />
+            <Transactions
+              transactions={transactions}
+              onEdit={handleEditTransaction}
+            />
           </div>
           <aside className="hidden rounded-2xl border border-slate-200 bg-slate-50/70 p-5 lg:block">
             <div className="flex items-center gap-2 text-sm font-bold text-slate-800">
@@ -84,10 +81,11 @@ function MainLayout() {
         </div>
 
         <TransactionModal
+          key={`${isTransactionModalOpen}-${transactionToEdit?.id ?? "new"}`}
           isOpen={isTransactionModalOpen}
           onClose={handleCloseTransactionModal}
-          onChange={handleFormChange}
           onSubmit={handleFormSubmit}
+          transactionToEdit={transactionToEdit}
         />
       </div>
     </main>

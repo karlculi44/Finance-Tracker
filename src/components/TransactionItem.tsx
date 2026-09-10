@@ -20,6 +20,7 @@ import formatCurrency from "../utils/formatCurrency";
 
 interface TransactionItemProps extends Transaction {
   isPositive: boolean;
+  onEdit: (transaction: Transaction) => void;
 }
 
 const categoryIcon: Record<
@@ -40,11 +41,14 @@ const categoryIcon: Record<
 };
 
 function TransactionItem({
+  id,
   description,
   category,
   amount,
   date,
+  type,
   isPositive,
+  onEdit,
 }: TransactionItemProps) {
   const { icon: CategoryIcon, tone: iconTone } = categoryIcon[category];
 
@@ -75,6 +79,9 @@ function TransactionItem({
       </p>
       <div className="hidden items-center gap-1 sm:flex">
         <button
+          onClick={() =>
+            onEdit({ id, description, category, amount, date, type })
+          }
           aria-label={`Edit ${description}`}
           className="rounded-lg p-2 text-slate-300 transition hover:bg-slate-100 hover:text-slate-700"
         >

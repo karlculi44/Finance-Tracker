@@ -4,7 +4,13 @@ import TransactionFilters from "./TransactionFilters";
 import TransactionList from "./TransactionList";
 import EmptyState from "./EmptyState";
 
-function Transactions({ transactions }: { transactions: Transaction[] }) {
+function Transactions({
+  transactions,
+  onEdit,
+}: {
+  transactions: Transaction[];
+  onEdit: (transaction: Transaction) => void;
+}) {
   return (
     <section className="rounded-2xl border border-slate-200 bg-white shadow-[0_8px_24px_rgba(15,23,42,0.04)]">
       <div className="flex flex-col gap-4 border-b border-slate-100 p-5 sm:flex-row sm:items-center sm:justify-between sm:p-6">
@@ -28,7 +34,7 @@ function Transactions({ transactions }: { transactions: Transaction[] }) {
           />
         </label>
         {transactions.length > 0 ? (
-          <TransactionList transactions={transactions} />
+          <TransactionList transactions={transactions} onEdit={onEdit} />
         ) : (
           <EmptyState />
         )}

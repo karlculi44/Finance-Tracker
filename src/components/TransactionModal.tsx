@@ -3,6 +3,7 @@ import { X } from "lucide-react";
 import type {
   TransactionCategory,
   TransactionForm,
+  Transaction,
   TransactionType,
 } from "../types/Transaction";
 import validateTransactionForm from "../utils/validateTransactionForm";
@@ -10,23 +11,40 @@ import validateTransactionForm from "../utils/validateTransactionForm";
 type TransactionModalProps = {
   isOpen: boolean;
   onClose: () => void;
-  onSubmit: () => void;
-  onChange: (form: TransactionForm) => void;
+  onSubmit: (form: TransactionForm) => void;
+  transactionToEdit: Transaction | null;
 };
+
+const createEmptyTransactionForm = (): TransactionForm => ({
+  description: "",
+  amount: 0,
+  type: "Expense",
+  category: "Other",
+  date: new Date(),
+});
+
+const getInitialForm = (
+  transactionToEdit: Transaction | null,
+): TransactionForm =>
+  transactionToEdit
+    ? {
+        description: transactionToEdit.description,
+        amount: transactionToEdit.amount,
+        type: transactionToEdit.type,
+        category: transactionToEdit.category,
+        date: new Date(transactionToEdit.date),
+      }
+    : createEmptyTransactionForm();
 
 function TransactionModal({
   isOpen,
   onClose,
-  onChange,
   onSubmit,
+  transactionToEdit,
 }: TransactionModalProps) {
-  const [form, setForm] = useState<TransactionForm>({
-    description: "",
-    amount: 0,
-    type: "Expense",
-    category: "Other",
-    date: new Date(),
-  });
+  const [form, setForm] = useState<TransactionForm>(() =>
+    getInitialForm(transactionToEdit),
+  );
   const [error, setError] = useState<string | null>(null);
 
   const handleInputChange = (
@@ -44,7 +62,6 @@ function TransactionModal({
 
     setForm(updatedForm);
     setError(null);
-    onChange(updatedForm);
   };
 
   const handleAddTransaction = (event: FormEvent<HTMLFormElement>) => {
@@ -56,16 +73,10 @@ function TransactionModal({
       return;
     }
 
-    onSubmit();
+    onSubmit(form);
     onClose();
     setError(null);
-    setForm({
-      description: "",
-      amount: 0,
-      type: "Expense",
-      category: "Other",
-      date: new Date(),
-    });
+    setForm(createEmptyTransactionForm());
   };
 
   if (!isOpen) return null;
@@ -75,7 +86,7 @@ function TransactionModal({
         <div className="flex items-start justify-between">
           <div>
             <h2 className="text-xl font-bold text-slate-950">
-              Add Transaction
+              {transactionToEdit ? "Edit Transaction" : "Add Transaction"}
             </h2>
             <p className="mt-1 text-sm text-slate-500">
               Record a new financial activity.
@@ -173,6 +184,7 @@ function TransactionModal({
           )}
           <div className="mt-6 flex justify-end gap-3">
             <button
+              type="button"
               className="rounded-xl px-4 py-2.5 text-sm font-semibold text-slate-500 hover:bg-slate-100"
               onClick={onClose}
             >
@@ -182,7 +194,7 @@ function TransactionModal({
               type="submit"
               className="rounded-xl bg-slate-950 px-4 py-2.5 text-sm font-semibold text-white"
             >
-              Add Transaction
+              {transactionToEdit ? "Save Changes" : "Add Transaction"}
             </button>
           </div>
         </form>
