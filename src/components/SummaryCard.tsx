@@ -4,12 +4,11 @@ import formatCurrency from "../utils/formatCurrency";
 type SummaryCardProps = {
   label: string;
   value: number;
-  detail: string;
   icon: ReactNode;
   tone: string;
 };
 
-function SummaryCard({ label, value, detail, icon, tone }: SummaryCardProps) {
+function SummaryCard({ label, value, icon, tone }: SummaryCardProps) {
   return (
     <article className="rounded-2xl border border-slate-200 bg-white p-5 shadow-[0_8px_24px_rgba(15,23,42,0.04)]">
       <div className="flex items-start justify-between">
@@ -21,7 +20,6 @@ function SummaryCard({ label, value, detail, icon, tone }: SummaryCardProps) {
         </div>
         <div className={`rounded-xl p-2.5 ${tone}`}>{icon}</div>
       </div>
-      <p className="mt-4 text-xs font-medium text-slate-400">{detail}</p>
     </article>
   );
 }

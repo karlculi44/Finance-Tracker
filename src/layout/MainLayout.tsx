@@ -24,6 +24,17 @@ function MainLayout() {
   const [transactionToEdit, setTransactionToEdit] =
     useState<Transaction | null>(null);
 
+  const totalIncome = transactions.reduce(
+    (total, transaction) =>
+      transaction.type === "Income" ? total + transaction.amount : total,
+    0,
+  );
+  const totalExpenses = transactions.reduce(
+    (total, transaction) =>
+      transaction.type === "Expense" ? total + transaction.amount : total,
+    0,
+  );
+
   const handleFormSubmit = (form: TransactionForm) => {
     const newTransactions = transactionToEdit
       ? transactions.map((transaction) =>
@@ -86,7 +97,10 @@ function MainLayout() {
         <Header onAddTransaction={handleOpenTransactionModal} />
         <div className="mt-8 grid gap-6 lg:mt-10 lg:grid-cols-[minmax(0,1fr)_300px]">
           <div className="space-y-6">
-            <SummaryCards />
+            <SummaryCards
+              totalIncome={totalIncome}
+              totalExpenses={totalExpenses}
+            />
             <Transactions
               transactions={transactions}
               onEdit={handleEditTransaction}
