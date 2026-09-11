@@ -65,8 +65,8 @@ function TransactionItem({
         <p className="truncate text-sm font-semibold text-slate-800">
           {description}
         </p>
-        <p className="mt-1 truncate text-xs text-slate-400">
-          {category} <span className="mx-1 text-slate-300">•</span>{" "}
+        <p className="truncate text-xs text-slate-400">{category}</p>
+        <p className="truncate text-xs text-slate-400">
           {date.toLocaleDateString("en-US", {
             year: "numeric",
             month: "long",

@@ -5,6 +5,7 @@ import type {
   TransactionCategory,
   TransactionFilterType,
 } from "../types/Transaction";
+import type { DateRangeType } from "../types/FinanceSummary";
 import TransactionFilters from "./TransactionFilters";
 import TransactionList from "./TransactionList";
 import EmptyState from "./EmptyState";
@@ -13,10 +14,14 @@ function Transactions({
   transactions,
   onEdit,
   onDelete,
+  dateRange,
+  onDateRangeChange,
 }: {
   transactions: Transaction[];
   onEdit: (transaction: Transaction) => void;
   onDelete: (transationId: string) => void;
+  dateRange: DateRangeType;
+  onDateRangeChange: (dateRange: DateRangeType) => void;
 }) {
   const [selectedFilter, setSelectedFilter] =
     useState<TransactionFilterType>("All");
@@ -42,18 +47,23 @@ function Transactions({
   };
 
   const normalizedSearchTerm = searchTerm.trim().toLowerCase();
-  const filteredTransactions = transactions.filter((transaction) => {
-    const matchesType =
-      selectedFilter === "All" || transaction.type === selectedFilter;
-    const matchesCategory =
-      selectedCategory === "All" || transaction.category === selectedCategory;
-    const matchesSearch =
-      normalizedSearchTerm === "" ||
-      transaction.description.toLowerCase().includes(normalizedSearchTerm) ||
-      transaction.category.toLowerCase().includes(normalizedSearchTerm);
+  const filteredTransactions = transactions
+    .filter((transaction) => {
+      const matchesType =
+        selectedFilter === "All" || transaction.type === selectedFilter;
+      const matchesCategory =
+        selectedCategory === "All" || transaction.category === selectedCategory;
+      const matchesSearch =
+        normalizedSearchTerm === "" ||
+        transaction.description.toLowerCase().includes(normalizedSearchTerm) ||
+        transaction.category.toLowerCase().includes(normalizedSearchTerm);
 
-    return matchesType && matchesCategory && matchesSearch;
-  });
+      return matchesType && matchesCategory && matchesSearch;
+    })
+    .sort(
+      (firstTransaction, secondTransaction) =>
+        secondTransaction.date.getTime() - firstTransaction.date.getTime(),
+    );
   const visibleTransactions = filteredTransactions.slice(0, visibleCount);
   const hasMoreThanTenTransactions = filteredTransactions.length > 10;
   const allTransactionsVisible = visibleCount >= filteredTransactions.length;
@@ -83,6 +93,8 @@ function Transactions({
           onFilterChange={handleFilterChange}
           selectedCategory={selectedCategory}
           onCategoryChange={handleCategoryChange}
+          selectedDateRange={dateRange}
+          onDateRangeChange={onDateRangeChange}
         />
       </div>
       <div className="p-5 sm:p-6">

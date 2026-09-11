@@ -2,6 +2,7 @@ import { CreditCard } from "lucide-react";
 import { useState } from "react";
 import { toast, ToastContainer } from "react-toastify";
 import type { TransactionForm, Transaction } from "../types/Transaction";
+import type { DateRangeType } from "../types/FinanceSummary";
 import { v4 as uuidv4 } from "uuid";
 import {
   getTransactionsFromStorage,
@@ -12,6 +13,34 @@ import Header from "../components/Header";
 import Transactions from "../components/Transactions";
 import TransactionModal from "../components/TransactionModal";
 import ConfirmDeleteModal from "../components/ConfirmDeleteModal";
+
+function getDateRangeStart(dateRange: DateRangeType, currentDate: Date) {
+  const startDate = new Date(currentDate);
+  startDate.setHours(0, 0, 0, 0);
+
+  switch (dateRange) {
+    case "Today":
+      return startDate;
+    case "Last 3 Days":
+      startDate.setDate(startDate.getDate() - 2);
+      return startDate;
+    case "This Week":
+      startDate.setDate(startDate.getDate() - startDate.getDay());
+      return startDate;
+    case "Last 2 Weeks":
+      startDate.setDate(startDate.getDate() - 13);
+      return startDate;
+    case "This Month":
+      startDate.setDate(1);
+      return startDate;
+    case "Last 3 Months":
+      startDate.setDate(1);
+      startDate.setMonth(startDate.getMonth() - 2);
+      return startDate;
+    case "All Time":
+      return null;
+  }
+}
 
 function MainLayout() {
   const [isTransactionModalOpen, setIsTransactionModalOpen] = useState(false);
@@ -24,6 +53,7 @@ function MainLayout() {
   );
   const [transactionToEdit, setTransactionToEdit] =
     useState<Transaction | null>(null);
+  const [dateRange, setDateRange] = useState<DateRangeType>("All Time");
 
   const totalIncome = transactions.reduce(
     (total, transaction) =>
@@ -35,9 +65,32 @@ function MainLayout() {
       transaction.type === "Expense" ? total + transaction.amount : total,
     0,
   );
+  const dateRangeStart = getDateRangeStart(dateRange, new Date());
+  const filteredTransactions = transactions.filter((transaction) => {
+    return (
+      dateRangeStart === null ||
+      (transaction.date >= dateRangeStart && transaction.date <= new Date())
+    );
+  });
+  const filteredIncome = filteredTransactions.reduce(
+    (total, transaction) =>
+      transaction.type === "Income" ? total + transaction.amount : total,
+    0,
+  );
+  const filteredExpenses = filteredTransactions.reduce(
+    (total, transaction) =>
+      transaction.type === "Expense" ? total + transaction.amount : total,
+    0,
+  );
+  const balance = totalIncome - totalExpenses;
   const remainingPercentage =
-    totalIncome > 0 ? ((totalIncome - totalExpenses) / totalIncome) * 100 : 0;
-  const remainingBarWidth = Math.max(0, Math.min(100, remainingPercentage));
+    filteredIncome > 0
+      ? ((filteredIncome - filteredExpenses) / filteredIncome) * 100
+      : null;
+  const remainingBarWidth = Math.max(
+    0,
+    Math.min(100, remainingPercentage ?? 0),
+  );
 
   const handleFormSubmit = (form: TransactionForm) => {
     const newTransactions = transactionToEdit
@@ -106,13 +159,16 @@ function MainLayout() {
         <div className="mt-8 grid gap-6 lg:mt-10 lg:grid-cols-[minmax(0,1fr)_300px]">
           <div className="order-2 space-y-6 lg:order-1 lg:col-start-1 lg:row-start-1">
             <SummaryCards
-              totalIncome={totalIncome}
-              totalExpenses={totalExpenses}
+              balance={balance}
+              totalIncome={filteredIncome}
+              totalExpenses={filteredExpenses}
             />
             <Transactions
-              transactions={transactions}
+              transactions={filteredTransactions}
               onEdit={handleEditTransaction}
               onDelete={handleDeleteTransaction}
+              dateRange={dateRange}
+              onDateRangeChange={setDateRange}
             />
           </div>
           <aside className="order-1 rounded-2xl  p-5 lg:order-2 lg:col-start-2 lg:row-start-1">
@@ -121,7 +177,9 @@ function MainLayout() {
               Quick insight
             </div>
             <p className="mt-5 text-3xl font-bold tracking-tight text-slate-950">
-              {remainingPercentage.toFixed(1)}%
+              {remainingPercentage === null
+                ? "No income recorded"
+                : `${remainingPercentage.toFixed(1)}%`}
             </p>
             <p className="mt-1 text-sm leading-5 text-slate-500">
               of your total income remains after expenses.

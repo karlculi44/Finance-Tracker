@@ -3,16 +3,18 @@ import { CircleDollarSign, ArrowUpRight, ArrowDownLeft } from "lucide-react";
 import type { SummaryCardsDataType } from "../types/FinanceSummary";
 
 function SummaryCards({
+  balance,
   totalIncome,
   totalExpenses,
 }: {
+  balance: number;
   totalIncome: number;
   totalExpenses: number;
 }) {
   const summaryCardsData: SummaryCardsDataType[] = [
     {
       label: "Balance",
-      value: totalIncome - totalExpenses,
+      value: balance,
       icon: <CircleDollarSign size={20} />,
       tone: "bg-slate-100 text-slate-700",
     },
