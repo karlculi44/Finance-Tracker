@@ -14,6 +14,7 @@ import QuickInsight from "../components/QuickInsight";
 import TransactionModal from "../components/TransactionModal";
 import ConfirmDeleteModal from "../components/ConfirmDeleteModal";
 import FinancialReportModal from "../components/FinancialReportModal";
+import Analytics from "../components/Analytics";
 
 const THEME_STORAGE_KEY = "expense-tracker-theme";
 
@@ -180,6 +181,10 @@ function MainLayout() {
               dateRange={dateRange}
               onDateRangeChange={setDateRange}
               onViewReport={() => setIsReportOpen(true)}
+            />
+            <Analytics
+              transactions={filteredTransactions}
+              dateRange={dateRange}
             />
           </div>
           <aside className="order-1 space-y-6 p-0 lg:order-2 lg:col-start-2 lg:row-start-1">

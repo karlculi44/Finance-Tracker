@@ -41,13 +41,20 @@ function QuickInsight({
       <p
         className={`mt-5 text-3xl font-bold tracking-tight ${status ? "app-status-text" : "app-text"}`}
       >
-        {remainingPercentage === null
-          ? "No income recorded"
-          : <AnimatedNumber value={remainingPercentage} formatter={formatPercentage} />}
+        {remainingPercentage === null ? (
+          "No income recorded"
+        ) : (
+          <AnimatedNumber
+            value={remainingPercentage}
+            formatter={formatPercentage}
+          />
+        )}
       </p>
-      <p className="mt-1 text-sm leading-5">
-        of your total income remains after expenses.
-      </p>
+      {remainingPercentage !== null && (
+        <p className="mt-1 text-sm leading-5">
+          of your total income remains after expenses in this period.
+        </p>
+      )}
       {remainingPercentage !== null && (
         <>
           <div className="app-status-track mt-6 h-2 rounded-full">
