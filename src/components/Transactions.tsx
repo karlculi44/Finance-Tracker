@@ -9,6 +9,7 @@ import type { DateRangeType } from "../types/FinanceSummary";
 import TransactionFilters from "./TransactionFilters";
 import TransactionList from "./TransactionList";
 import EmptyState from "./EmptyState";
+import NoResults from "./NoResults";
 
 function Transactions({
   transactions,
@@ -129,7 +130,7 @@ function Transactions({
             )}
           </>
         ) : (
-          <EmptyState />
+          normalizedSearchTerm ? <NoResults /> : <EmptyState />
         )}
       </div>
     </section>
