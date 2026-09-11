@@ -74,11 +74,13 @@ function TransactionItem({
           })}
         </p>
       </div>
-      <p
-        className={`whitespace-nowrap text-sm font-bold ${isPositive ? "text-emerald-600" : "text-slate-800"}`}
-      >
-        {isPositive ? "+" : "-"} {formatCurrency(amount)}
-      </p>
+      <div className="flex shrink-0 flex-col items-end gap-1">
+        <p
+          className={`whitespace-nowrap text-sm font-bold ${isPositive ? "text-emerald-600" : "text-slate-800"}`}
+        >
+          {isPositive ? "+" : "-"} {formatCurrency(amount)}
+        </p>
+      </div>
       <div className="hidden items-center gap-1 sm:flex">
         <button
           onClick={() =>
@@ -96,6 +98,13 @@ function TransactionItem({
         >
           <Trash2 size={15} />
         </button>
+        <time className="text-xs text-slate-400">
+          {date.toLocaleTimeString("en-US", {
+            hour: "numeric",
+            minute: "2-digit",
+            hour12: true,
+          })}
+        </time>
       </div>
       <button
         aria-label={`More options for ${description}`}

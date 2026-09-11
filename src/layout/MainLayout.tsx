@@ -1,5 +1,6 @@
 import { CreditCard } from "lucide-react";
 import { useState } from "react";
+import { toast, ToastContainer } from "react-toastify";
 import type { TransactionForm, Transaction } from "../types/Transaction";
 import { v4 as uuidv4 } from "uuid";
 import {
@@ -34,6 +35,9 @@ function MainLayout() {
       transaction.type === "Expense" ? total + transaction.amount : total,
     0,
   );
+  const remainingPercentage =
+    totalIncome > 0 ? ((totalIncome - totalExpenses) / totalIncome) * 100 : 0;
+  const remainingBarWidth = Math.max(0, Math.min(100, remainingPercentage));
 
   const handleFormSubmit = (form: TransactionForm) => {
     const newTransactions = transactionToEdit
@@ -46,6 +50,7 @@ function MainLayout() {
 
     setTransactions(newTransactions);
     saveTransactionsToStorage(newTransactions);
+    if (!transactionToEdit) toast.success("Transaction added successfully.");
   };
 
   const handleOpenTransactionModal = () => {
@@ -93,6 +98,7 @@ function MainLayout() {
 
   return (
     <main className="min-h-screen bg-[#f7f8fa] text-slate-950">
+      <ToastContainer position="top-center" autoClose={3000} />
       <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8 lg:py-12">
         <Header onAddTransaction={handleOpenTransactionModal} />
         <div className="mt-8 grid gap-6 lg:mt-10 lg:grid-cols-[minmax(0,1fr)_300px]">
@@ -113,13 +119,16 @@ function MainLayout() {
               Quick insight
             </div>
             <p className="mt-5 text-3xl font-bold tracking-tight text-slate-950">
-              50.2%
+              {remainingPercentage.toFixed(1)}%
             </p>
             <p className="mt-1 text-sm leading-5 text-slate-500">
-              of your monthly income remains after expenses.
+              of your total income remains after expenses.
             </p>
             <div className="mt-6 h-2 rounded-full bg-slate-200">
-              <div className="h-2 w-1/2 rounded-full bg-emerald-500" />
+              <div
+                className="h-2 rounded-full bg-emerald-500 transition-[width]"
+                style={{ width: `${remainingBarWidth}%` }}
+              />
             </div>
             <div className="mt-3 flex justify-between text-xs font-medium text-slate-400">
               <span>Spent</span>
