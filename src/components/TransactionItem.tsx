@@ -55,18 +55,16 @@ function TransactionItem({
   const { icon: CategoryIcon, tone: iconTone } = categoryIcon[category];
 
   return (
-    <div className="group flex items-center gap-3 border-b border-slate-100 py-4 last:border-0 sm:gap-4">
+    <div className="group flex items-center gap-3 border-b app-border py-4 last:border-0 sm:gap-4">
       <div
         className={`flex size-10 shrink-0 items-center justify-center rounded-xl ${iconTone}`}
       >
         <CategoryIcon size={18} />
       </div>
       <div className="min-w-0 flex-1">
-        <p className="truncate text-sm font-semibold text-slate-800">
-          {description}
-        </p>
-        <p className="truncate text-xs text-slate-400">{category}</p>
-        <p className="truncate text-xs text-slate-400">
+        <p className="truncate text-sm font-semibold app-text">{description}</p>
+        <p className="truncate text-xs app-muted">{category}</p>
+        <p className="truncate text-xs app-faint">
           {date.toLocaleDateString("en-US", {
             year: "numeric",
             month: "long",
@@ -76,7 +74,7 @@ function TransactionItem({
       </div>
       <div className="flex shrink-0 flex-col items-end gap-1">
         <p
-          className={`whitespace-nowrap text-sm font-bold ${isPositive ? "text-emerald-600" : "text-slate-800"}`}
+          className={`whitespace-nowrap text-sm font-bold ${isPositive ? "app-primary" : "app-text"}`}
         >
           {isPositive ? "+" : "-"} {formatCurrency(amount)}
         </p>
@@ -87,18 +85,18 @@ function TransactionItem({
             onEdit({ id, description, category, amount, date, type })
           }
           aria-label={`Edit ${description}`}
-          className="rounded-lg p-2 text-slate-300 transition hover:bg-slate-100 hover:text-slate-700"
+          className="rounded-lg p-2 app-faint transition hover:bg-(--app-surface-muted) hover:text-(--app-text)"
         >
           <Pencil size={15} />
         </button>
         <button
           onClick={() => onDelete(id)}
           aria-label={`Delete ${description}`}
-          className="rounded-lg p-2 text-slate-300 transition hover:bg-rose-50 hover:text-rose-500"
+          className="rounded-lg p-2 app-faint transition hover:bg-(--app-danger-soft)] hover:app-danger"
         >
           <Trash2 size={15} />
         </button>
-        <time className="text-xs text-slate-400">
+        <time className="text-xs app-faint">
           {date.toLocaleTimeString("en-US", {
             hour: "numeric",
             minute: "2-digit",

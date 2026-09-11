@@ -83,12 +83,12 @@ function Transactions({
   };
 
   return (
-    <section className="rounded-2xl border border-slate-200 bg-white shadow-[0_8px_24px_rgba(15,23,42,0.04)]">
-      <div className="flex flex-col gap-4 border-b border-slate-100 p-5 sm:flex-row sm:items-center sm:justify-between sm:p-6">
+    <section className="app-surface rounded-2xl border">
+      <div className="flex flex-col gap-4 border-b app-border p-5 sm:flex-row sm:items-center sm:justify-between sm:p-6">
         <div className="flex items-start justify-between gap-4">
           <div>
-            <h2 className="text-lg font-bold text-slate-950">Transactions</h2>
-            <p className="mt-1 text-sm text-slate-500">
+            <h2 className="text-lg font-bold app-text">Transactions</h2>
+            <p className="mt-1 text-sm app-muted">
               Your recent financial activity
             </p>
           </div>
@@ -107,7 +107,7 @@ function Transactions({
           <button
             type="button"
             onClick={onViewReport}
-            className="shrink-0 rounded-xl bg-slate-950 px-3 py-2 text-xs font-semibold text-white transition hover:bg-slate-800"
+            className="app-primary-bg shrink-0 rounded-xl px-3 py-2 text-xs font-semibold text-white transition hover:-translate-y-0.5"
           >
             View Report
           </button>
@@ -121,7 +121,7 @@ function Transactions({
             value={searchTerm}
             onChange={(event) => handleSearchChange(event.target.value)}
             aria-label="Search transactions"
-            className="w-full rounded-xl border border-slate-200 bg-slate-50 py-2.5 pl-10 pr-4 text-sm text-slate-800 outline-none placeholder:text-slate-400 focus:border-slate-400"
+            className="app-input w-full rounded-xl border py-2.5 pl-10 pr-4 text-sm outline-none"
             placeholder="Search transactions..."
           />
         </label>
@@ -137,7 +137,7 @@ function Transactions({
                 <button
                   type="button"
                   onClick={handleViewMoreOrLess}
-                  className="rounded-xl  px-4 py-2.5 text-sm font-semibold text-slate-600 transition hover:border-slate-300 hover:bg-slate-50 hover:text-slate-900"
+                  className="app-surface-raised app-text rounded-xl border px-4 py-2.5 text-sm font-semibold transition hover:border-[var(--app-primary)] hover:text-[var(--app-primary)]"
                 >
                   {allTransactionsVisible ? "View Less" : "View More"}
                 </button>

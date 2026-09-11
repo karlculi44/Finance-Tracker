@@ -65,31 +65,31 @@ function FinancialReportModal({
       : `${formatDate(periodStart)} - ${formatDate(periodEnd)}`;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/50 p-4">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#07120f]/70 p-4">
       <div
         role="dialog"
         aria-modal="true"
         aria-labelledby="financial-report-title"
-        className="max-h-[90vh] w-full max-w-4xl overflow-y-auto rounded-2xl border border-slate-200 bg-white p-5 shadow-xl sm:p-6"
+        className="app-surface max-h-[90vh] w-full max-w-4xl overflow-y-auto rounded-2xl border p-5 sm:p-6"
       >
-        <div className="flex items-start justify-between gap-4 border-b border-slate-100 pb-5">
+        <div className="flex items-start justify-between gap-4 border-b app-border pb-5">
           <div>
             <h2
               id="financial-report-title"
-              className="text-xl font-bold text-slate-950"
+              className="text-xl font-bold app-text"
             >
               Financial Report
             </h2>
-            <p className="mt-1 text-sm text-slate-500">
+            <p className="mt-1 text-sm app-muted">
               Period:{" "}
-              <span className="font-semibold text-slate-700">{dateRange}</span>
+              <span className="font-semibold app-text">{dateRange}</span>
             </p>
-            <p className="mt-1 text-xs text-slate-400">{periodDetail}</p>
+            <p className="mt-1 text-xs app-faint">{periodDetail}</p>
           </div>
           <button
             type="button"
             aria-label="Close financial report"
-            className="rounded-lg p-2 text-slate-400 transition hover:bg-slate-100 hover:text-slate-700"
+            className="rounded-lg p-2 app-faint transition hover:bg-(--app-surface-muted) hover:text-(--app-text)"
             onClick={onClose}
           >
             <X size={18} />
@@ -98,10 +98,10 @@ function FinancialReportModal({
 
         {transactions.length === 0 ? (
           <div className="py-14 text-center">
-            <h3 className="text-lg font-bold text-slate-950">
+            <h3 className="text-lg font-bold app-text">
               No transactions for this period
             </h3>
-            <p className="mt-2 text-sm text-slate-500">
+            <p className="mt-2 text-sm app-muted">
               There is no financial activity to include in this report.
             </p>
           </div>
@@ -122,26 +122,20 @@ function FinancialReportModal({
               ].map(([label, value]) => (
                 <div
                   key={label}
-                  className="rounded-xl border border-slate-200 bg-slate-50 p-4"
+                  className="app-surface-raised rounded-xl border p-4"
                 >
-                  <p className="text-xs font-semibold text-slate-500">
-                    {label}
-                  </p>
-                  <p className="mt-2 text-lg font-bold text-slate-950">
-                    {value}
-                  </p>
+                  <p className="text-xs font-semibold app-muted">{label}</p>
+                  <p className="mt-2 text-lg font-bold app-text">{value}</p>
                 </div>
               ))}
             </div>
 
-            <section className="border-t border-slate-100 pt-5">
-              <h3 className="text-base font-bold text-slate-950">
+            <section className="border-t app-border pt-5">
+              <h3 className="text-base font-bold app-text">
                 Expense Breakdown
               </h3>
               {expenseBreakdown.length === 0 ? (
-                <p className="mt-4 text-sm text-slate-500">
-                  No expenses recorded.
-                </p>
+                <p className="mt-4 text-sm app-muted">No expenses recorded.</p>
               ) : (
                 <div className="mt-3 space-y-3">
                   {expenseBreakdown.map(([category, amount]) => (
@@ -149,13 +143,13 @@ function FinancialReportModal({
                       key={category}
                       className="grid grid-cols-[minmax(0,1fr)_auto_auto] items-center gap-3 text-sm"
                     >
-                      <span className="truncate font-medium text-slate-700">
+                      <span className="truncate font-medium app-text">
                         {category}
                       </span>
-                      <span className="font-semibold text-slate-800">
+                      <span className="font-semibold app-text">
                         {formatCurrency(amount)}
                       </span>
-                      <span className="w-12 text-right text-slate-500">
+                      <span className="w-12 text-right app-muted">
                         {totalExpenses > 0
                           ? `${((amount / totalExpenses) * 100).toFixed(1)}%`
                           : "0%"}
@@ -166,15 +160,13 @@ function FinancialReportModal({
               )}
             </section>
 
-            <section className="mt-6 border-t border-slate-100 pt-5">
-              <h3 className="text-base font-bold text-slate-950">
-                Transactions
-              </h3>
+            <section className="mt-6 border-t app-border pt-5">
+              <h3 className="text-base font-bold app-text">Transactions</h3>
               <div className="mt-3 overflow-x-auto">
                 <table className="w-full min-w-155 text-left text-sm">
-                  <thead className="border-b border-slate-200 text-xs uppercase tracking-wide text-slate-400">
+                  <thead className="border-b app-border text-xs uppercase tracking-wide app-faint">
                     <tr>
-                      <th className="sticky left-0 z-20 bg-white px-3 py-3 font-semibold">
+                      <th className="app-sticky sticky left-0 z-20 px-3 py-3 font-semibold">
                         Description
                       </th>
                       <th className="px-3 py-3 font-semibold">Category</th>
@@ -188,21 +180,21 @@ function FinancialReportModal({
                   <tbody className="divide-y divide-slate-100">
                     {transactions.map((transaction) => (
                       <tr key={transaction.id}>
-                        <td className="sticky left-0 z-10 max-w-48 truncate bg-white px-3 py-3 font-medium text-slate-700">
+                        <td className="app-sticky sticky left-0 z-10 max-w-48 truncate px-3 py-3 font-medium app-text">
                           {transaction.description}
                         </td>
-                        <td className="px-3 py-3 text-slate-500">
+                        <td className="px-3 py-3 app-muted">
                           {transaction.category}
                         </td>
                         <td
-                          className={`px-3 py-3 font-medium ${transaction.type === "Income" ? "text-emerald-600" : "text-slate-600"}`}
+                          className={`px-3 py-3 font-medium ${transaction.type === "Income" ? "app-primary" : "app-muted"}`}
                         >
                           {transaction.type}
                         </td>
-                        <td className="whitespace-nowrap px-3 py-3 text-slate-500">
+                        <td className="whitespace-nowrap px-3 py-3 app-muted">
                           {formatDate(transaction.date)}
                         </td>
-                        <td className="whitespace-nowrap px-3 py-3 text-right font-semibold text-slate-800">
+                        <td className="whitespace-nowrap px-3 py-3 text-right font-semibold app-text">
                           {transaction.type === "Income" ? "+" : "-"}{" "}
                           {formatCurrency(transaction.amount)}
                         </td>
@@ -215,10 +207,10 @@ function FinancialReportModal({
           </>
         )}
 
-        <div className="mt-6 flex justify-end border-t border-slate-100 pt-5">
+        <div className="mt-6 flex justify-end border-t app-border pt-5">
           <button
             type="button"
-            className="rounded-xl bg-slate-950 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-slate-800"
+            className="app-primary-bg rounded-xl px-4 py-2.5 text-sm font-semibold text-white transition hover:-translate-y-0.5"
             onClick={onClose}
           >
             Close

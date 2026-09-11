@@ -81,38 +81,38 @@ function TransactionModal({
 
   if (!isOpen) return null;
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/50 p-4">
-      <div className="w-full max-w-lg rounded-2xl border border-slate-200 bg-white p-6 shadow-xl">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#07120f]/70 p-4">
+      <div className="app-surface w-full max-w-lg rounded-2xl border p-6">
         <div className="flex items-start justify-between">
           <div>
-            <h2 className="text-xl font-bold text-slate-950">
+            <h2 className="text-xl font-bold app-text">
               {transactionToEdit ? "Edit Transaction" : "Add Transaction"}
             </h2>
-            <p className="mt-1 text-sm text-slate-500">
+            <p className="mt-1 text-sm app-muted">
               Record a new financial activity.
             </p>
           </div>
           <button
             aria-label="Close modal"
-            className="rounded-lg p-2 text-slate-400 hover:bg-slate-100"
+            className="rounded-lg p-2 app-faint hover:bg-(--app-surface-muted)"
             onClick={onClose}
           >
             <X size={18} />
           </button>
         </div>
         <form className="mt-6 grid gap-4" onSubmit={handleAddTransaction}>
-          <label className="grid gap-2 text-sm font-semibold text-slate-700">
+          <label className="grid gap-2 text-sm font-semibold app-text">
             Description
             <input
               name="description"
               value={form.description}
               onChange={handleInputChange}
               aria-invalid={Boolean(error && !form.description.trim())}
-              className="rounded-xl border border-slate-200 px-3.5 py-2.5 font-normal outline-none placeholder:text-slate-400"
+              className="app-input rounded-xl border px-3.5 py-2.5 font-normal outline-none"
               placeholder="e.g. Grocery shopping"
             />
           </label>
-          <label className="grid gap-2 text-sm font-semibold text-slate-700">
+          <label className="grid gap-2 text-sm font-semibold app-text">
             Amount
             <input
               name="amount"
@@ -122,30 +122,30 @@ function TransactionModal({
               aria-invalid={Boolean(
                 error && (!Number.isFinite(form.amount) || form.amount <= 0),
               )}
-              className="rounded-xl border border-slate-200 px-3.5 py-2.5 font-normal outline-none placeholder:text-slate-400"
+              className="app-input rounded-xl border px-3.5 py-2.5 font-normal outline-none"
               placeholder="₱0.00"
             />
           </label>
           <div className="grid gap-4 sm:grid-cols-2">
-            <label className="grid gap-2 text-sm font-semibold text-slate-700">
+            <label className="grid gap-2 text-sm font-semibold app-text">
               Type
               <select
                 name="type"
                 value={form.type}
                 onChange={handleInputChange}
-                className="appearance-none rounded-xl border border-slate-200 bg-white px-3.5 py-2.5 font-normal outline-none"
+                className="app-input appearance-none rounded-xl border px-3.5 py-2.5 font-normal outline-none"
               >
                 <option value="Expense">Expense</option>
                 <option value="Income">Income</option>
               </select>
             </label>
-            <label className="grid gap-2 text-sm font-semibold text-slate-700">
+            <label className="grid gap-2 text-sm font-semibold app-text">
               Category
               <select
                 name="category"
                 value={form.category}
                 onChange={handleInputChange}
-                className="appearance-none rounded-xl border border-slate-200 bg-white px-3.5 py-2.5 font-normal outline-none"
+                className="app-input appearance-none rounded-xl border px-3.5 py-2.5 font-normal outline-none"
               >
                 <option value="Other">Select category</option>
                 <option value="Food">Food</option>
@@ -173,7 +173,7 @@ function TransactionModal({
                 aria-invalid={Boolean(
                   error && Number.isNaN(form.date.getTime()),
                 )}
-                className="w-full rounded-xl border border-slate-200 px-3.5 py-2.5 font-normal outline-none"
+                className="app-input w-full rounded-xl border px-3.5 py-2.5 font-normal outline-none"
               />
             </div>
           </label>
@@ -185,14 +185,14 @@ function TransactionModal({
           <div className="mt-6 flex justify-end gap-3">
             <button
               type="button"
-              className="rounded-xl px-4 py-2.5 text-sm font-semibold text-slate-500 hover:bg-slate-100"
+              className="rounded-xl px-4 py-2.5 text-sm font-semibold app-muted hover:bg-(--app-surface-muted)"
               onClick={onClose}
             >
               Cancel
             </button>
             <button
               type="submit"
-              className="rounded-xl bg-slate-950 px-4 py-2.5 text-sm font-semibold text-white"
+              className="app-primary-bg rounded-xl px-4 py-2.5 text-sm font-semibold text-white"
             >
               {transactionToEdit ? "Save Changes" : "Add Transaction"}
             </button>

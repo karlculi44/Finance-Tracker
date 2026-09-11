@@ -56,6 +56,7 @@ function MainLayout() {
     useState<Transaction | null>(null);
   const [dateRange, setDateRange] = useState<DateRangeType>("All Time");
   const [isReportOpen, setIsReportOpen] = useState(false);
+  const [isDarkMode, setIsDarkMode] = useState(false);
 
   const totalIncome = transactions.reduce(
     (total, transaction) =>
@@ -154,10 +155,14 @@ function MainLayout() {
   };
 
   return (
-    <main className="min-h-screen bg-[#f7f8fa] text-slate-950">
+    <main className={`app-shell ${isDarkMode ? "dark-mode" : ""}`}>
       <ToastContainer position="top-center" autoClose={3000} />
       <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8 lg:py-12">
-        <Header onAddTransaction={handleOpenTransactionModal} />
+        <Header
+          onAddTransaction={handleOpenTransactionModal}
+          isDarkMode={isDarkMode}
+          onToggleTheme={() => setIsDarkMode((current) => !current)}
+        />
         <div className="mt-8 grid gap-6 lg:mt-10 lg:grid-cols-[minmax(0,1fr)_300px]">
           <div className="order-2 space-y-6 lg:order-1 lg:col-start-1 lg:row-start-1">
             <SummaryCards
@@ -175,12 +180,12 @@ function MainLayout() {
               onViewReport={() => setIsReportOpen(true)}
             />
           </div>
-          <aside className="order-1 rounded-2xl  p-5 lg:order-2 lg:col-start-2 lg:row-start-1">
-            <div className="flex items-center gap-2 text-sm font-bold text-slate-800">
-              <CreditCard size={17} className="text-slate-400" />
+          <aside className=" order-1 rounded-2xl  p-5 lg:order-2 lg:col-start-2 lg:row-start-1">
+            <div className="flex items-center gap-2 text-sm font-bold app-text">
+              <CreditCard size={17} className="app-primary" />
               Quick insight
             </div>
-            <p className="mt-5 text-3xl font-bold tracking-tight text-slate-950">
+            <p className="mt-5 text-3xl font-bold tracking-tight app-text">
               {remainingPercentage === null
                 ? "No income recorded"
                 : `${remainingPercentage.toFixed(1)}%`}
@@ -190,11 +195,11 @@ function MainLayout() {
             </p>
             <div className="mt-6 h-2 rounded-full bg-slate-200">
               <div
-                className="h-2 rounded-full bg-emerald-500 transition-[width]"
+                className="app-primary-bg h-2 rounded-full transition-[width]"
                 style={{ width: `${remainingBarWidth}%` }}
               />
             </div>
-            <div className="mt-3 flex justify-between text-xs font-medium text-slate-400">
+            <div className="mt-3 flex justify-between text-xs font-medium app-faint">
               <span>Remaining</span>
               <span>Spent</span>
             </div>

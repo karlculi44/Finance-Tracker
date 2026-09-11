@@ -11,14 +11,17 @@ type SummaryCardProps = {
 
 function SummaryCard({ label, value, detail, icon, tone }: SummaryCardProps) {
   return (
-    <article className="rounded-2xl border border-slate-200 bg-white p-5 shadow-[0_8px_24px_rgba(15,23,42,0.04)]">
+    <article className="app-surface relative overflow-hidden rounded-2xl border p-5">
+      <div className="absolute inset-y-0 left-0 w-1 app-primary-bg" />
       <div className="flex items-start justify-between">
         <div>
-          <p className="text-sm font-medium text-slate-500">{label}</p>
-          <p className="mt-3 text-2xl font-bold tracking-tight text-slate-950">
+          <p className="text-sm font-medium app-muted">{label}</p>
+          <p className="mt-3 text-2xl font-bold tracking-tight app-text">
             {formatCurrency(value)}
           </p>
-          <p className="mt-1 text-xs font-medium text-slate-400">{detail}</p>
+          <p className="mt-1 text-xs font-medium app-faint">
+            {detail || "Current balance"}
+          </p>
         </div>
         <div className={`rounded-xl p-2.5 ${tone}`}>{icon}</div>
       </div>

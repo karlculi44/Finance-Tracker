@@ -52,13 +52,13 @@ function TransactionFilters({
 
   return (
     <div className="flex flex-wrap items-end gap-2 text-xs font-semibold">
-      <label className="grid gap-1 text-slate-500">
+      <label className="grid gap-1 app-muted">
         <select
           value={selectedDateRange}
           onChange={(event) =>
             onDateRangeChange(event.target.value as DateRangeType)
           }
-          className="rounded-lg border border-slate-200 bg-white px-3 py-2 font-medium text-slate-700 outline-none transition focus:border-slate-400"
+          className="app-input rounded-lg border px-3 py-2 font-medium outline-none transition"
         >
           {dateRanges.map((dateRange) => (
             <option key={dateRange} value={dateRange}>
@@ -68,13 +68,13 @@ function TransactionFilters({
         </select>
       </label>
 
-      <label className="grid gap-1 text-slate-500">
+      <label className="grid gap-1 app-muted">
         <select
           value={selectedCategory}
           onChange={(event) =>
             onCategoryChange(event.target.value as CategoryFilter)
           }
-          className="rounded-lg border border-slate-200 bg-white px-3 py-2 font-medium text-slate-700 outline-none transition focus:border-slate-400"
+          className="app-input rounded-lg border px-3 py-2 font-medium outline-none transition"
         >
           <option value="All">All Categories</option>
           {categories.map((category) => (
@@ -84,7 +84,7 @@ function TransactionFilters({
           ))}
         </select>
       </label>
-      <div className="flex items-center gap-1 rounded-lg bg-slate-100 p-1">
+      <div className="app-surface-muted flex items-center gap-1 rounded-lg border p-1">
         {filters.map(({ label, value }) => {
           const isSelected = selectedFilter === value;
 
@@ -95,8 +95,8 @@ function TransactionFilters({
               onClick={() => onFilterChange(value)}
               className={`rounded-md px-3 py-1.5 transition ${
                 isSelected
-                  ? "bg-white text-slate-900 shadow-sm"
-                  : "text-slate-500 hover:text-slate-900"
+                  ? "app-surface app-primary shadow-sm"
+                  : "app-muted hover:text-(--app-text)"
               }`}
             >
               {label}
