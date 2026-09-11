@@ -1,4 +1,4 @@
-type TransactionType = "Income" | "Expense";
+type TransactionFilterType = "All" | "Income" | "Expense";
 
 type TransactionCategory =
   | "Food"
@@ -16,7 +16,7 @@ type TransactionCategory =
 type TransactionForm = {
   description: string;
   amount: number;
-  type: TransactionType;
+  type: TransactionFilterType;
   category: TransactionCategory;
   date: Date;
 };
@@ -25,13 +25,13 @@ type Transaction = {
   id: string;
   description: string;
   amount: number;
-  type: TransactionType;
+  type: TransactionFilterType;
   category: TransactionCategory;
   date: Date;
 };
 
 export type {
-  TransactionType,
+  TransactionFilterType,
   TransactionCategory,
   Transaction,
   TransactionForm,

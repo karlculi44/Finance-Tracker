@@ -4,7 +4,7 @@ import type {
   TransactionCategory,
   TransactionForm,
   Transaction,
-  TransactionType,
+  TransactionFilterType,
 } from "../types/Transaction";
 import validateTransactionForm from "../utils/validateTransactionForm";
 
@@ -55,7 +55,7 @@ function TransactionModal({
 
     if (name === "description") updatedForm.description = value;
     if (name === "amount") updatedForm.amount = Number(value);
-    if (name === "type") updatedForm.type = value as TransactionType;
+    if (name === "type") updatedForm.type = value as TransactionFilterType;
     if (name === "category")
       updatedForm.category = value as TransactionCategory;
     if (name === "date") updatedForm.date = new Date(`${value}T00:00:00`);

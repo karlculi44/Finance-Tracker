@@ -1,5 +1,10 @@
 import { Search } from "lucide-react";
-import type { Transaction } from "../types/Transaction";
+import { useState } from "react";
+import type {
+  Transaction,
+  TransactionCategory,
+  TransactionFilterType,
+} from "../types/Transaction";
 import TransactionFilters from "./TransactionFilters";
 import TransactionList from "./TransactionList";
 import EmptyState from "./EmptyState";
@@ -13,6 +18,21 @@ function Transactions({
   onEdit: (transaction: Transaction) => void;
   onDelete: (transationId: string) => void;
 }) {
+  const [selectedFilter, setSelectedFilter] =
+    useState<TransactionFilterType>("All");
+  const [selectedCategory, setSelectedCategory] = useState<
+    "All" | TransactionCategory
+  >("All");
+
+  const filteredTransactions = transactions.filter((transaction) => {
+    const matchesType =
+      selectedFilter === "All" || transaction.type === selectedFilter;
+    const matchesCategory =
+      selectedCategory === "All" || transaction.category === selectedCategory;
+
+    return matchesType && matchesCategory;
+  });
+
   return (
     <section className="rounded-2xl border border-slate-200 bg-white shadow-[0_8px_24px_rgba(15,23,42,0.04)]">
       <div className="flex flex-col gap-4 border-b border-slate-100 p-5 sm:flex-row sm:items-center sm:justify-between sm:p-6">
@@ -22,7 +42,12 @@ function Transactions({
             Your recent financial activity
           </p>
         </div>
-        <TransactionFilters />
+        <TransactionFilters
+          selectedFilter={selectedFilter}
+          onFilterChange={setSelectedFilter}
+          selectedCategory={selectedCategory}
+          onCategoryChange={setSelectedCategory}
+        />
       </div>
       <div className="p-5 sm:p-6">
         <label className="relative block">
@@ -35,9 +60,9 @@ function Transactions({
             placeholder="Search transactions..."
           />
         </label>
-        {transactions.length > 0 ? (
+        {filteredTransactions.length > 0 ? (
           <TransactionList
-            transactions={transactions}
+            transactions={filteredTransactions}
             onEdit={onEdit}
             onDelete={onDelete}
           />
