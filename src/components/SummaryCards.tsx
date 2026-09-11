@@ -22,7 +22,8 @@ function SummaryCards({
       value: balance,
       detail: "",
       icon: <CircleDollarSign size={20} />,
-      tone: "bg-slate-100 text-slate-700",
+      tone: "bg-indigo-50 text-indigo-600",
+      accent: "app-accent-indigo",
     },
     {
       label: "Income",
@@ -30,13 +31,15 @@ function SummaryCards({
       detail: dateRange,
       icon: <ArrowDownLeft size={20} />,
       tone: "bg-emerald-50 text-emerald-600",
+      accent: "app-accent-emerald",
     },
     {
       label: "Expenses",
       value: totalExpenses,
       detail: dateRange,
       icon: <ArrowUpRight size={20} />,
-      tone: "bg-rose-50 text-rose-500",
+      tone: "bg-amber-50 text-amber-600",
+      accent: "app-accent-amber",
     },
   ];
 
@@ -45,7 +48,7 @@ function SummaryCards({
       className="grid gap-4 md:grid-cols-3 lg:grid-cols-1"
       aria-label="Financial summary"
     >
-      {summaryCardsData.map(({ label, value, detail, icon, tone }) => (
+      {summaryCardsData.map(({ label, value, detail, icon, tone, accent }) => (
         <SummaryCard
           key={label}
           label={label}
@@ -53,6 +56,7 @@ function SummaryCards({
           detail={detail}
           icon={icon}
           tone={tone}
+          accent={accent}
         />
       ))}
     </section>

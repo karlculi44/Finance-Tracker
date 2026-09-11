@@ -7,12 +7,22 @@ type SummaryCardProps = {
   detail: string;
   icon: ReactNode;
   tone: string;
+  accent: string;
 };
 
-function SummaryCard({ label, value, detail, icon, tone }: SummaryCardProps) {
+function SummaryCard({
+  label,
+  value,
+  detail,
+  icon,
+  tone,
+  accent,
+}: SummaryCardProps) {
   return (
-    <article className="app-surface relative overflow-hidden rounded-2xl border p-5">
-      <div className="absolute inset-y-0 left-0 w-1 app-primary-bg" />
+    <article
+      className={`app-surface relative overflow-hidden rounded-2xl border p-5 ${accent}`}
+    >
+      <div className="app-accent-bar absolute inset-y-0 left-0 w-1" />
       <div className="flex items-start justify-between">
         <div>
           <p className="text-sm font-medium app-muted">{label}</p>

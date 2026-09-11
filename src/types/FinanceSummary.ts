@@ -15,6 +15,7 @@ type SummaryCardsDataType = {
   detail: string;
   icon: ReactNode;
   tone: string;
+  accent: string;
 };
 
 export type { DateRangeType, SummaryCardsDataType };

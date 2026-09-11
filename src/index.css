@@ -136,6 +136,67 @@ select {
   background: var(--app-surface);
 }
 
+.app-accent-indigo {
+  --app-accent: #6366f1;
+}
+.app-accent-emerald {
+  --app-accent: #10b981;
+}
+.app-accent-amber {
+  --app-accent: #d97706;
+}
+.app-accent-bar {
+  background: var(--app-accent);
+}
+.app-accent-text {
+  color: var(--app-accent);
+}
+
+.app-shell.dark-mode .app-accent-indigo {
+  --app-accent: #818cf8;
+}
+.app-shell.dark-mode .app-accent-emerald {
+  --app-accent: #55c887;
+}
+.app-shell.dark-mode .app-accent-amber {
+  --app-accent: #f0b35c;
+}
+
+.app-status-low {
+  --app-status-color: #d95f5f;
+  --app-status-track: #f8e2e0;
+}
+.app-status-medium {
+  --app-status-color: #c97816;
+  --app-status-track: #f8ecd6;
+}
+.app-status-healthy {
+  --app-status-color: #087443;
+  --app-status-track: #e2f2e8;
+}
+.app-status-text {
+  color: var(--app-status-color);
+}
+.app-status-track {
+  background: var(--app-status-track);
+}
+.app-status-bar {
+  background: var(--app-status-color);
+}
+
+.app-shell.dark-mode .app-status-low {
+  --app-status-color: #f08078;
+  --app-status-track: #4a2929;
+}
+.app-shell.dark-mode .app-status-medium {
+  --app-status-color: #f0b35c;
+  --app-status-track: #4a3824;
+}
+.app-shell.dark-mode .app-status-healthy {
+  --app-status-color: #55c887;
+  --app-status-track: #1d4935;
+}
+
 .scrollbar-hidden,
 .scrollbar-visible {
   scrollbar-width: thin;
