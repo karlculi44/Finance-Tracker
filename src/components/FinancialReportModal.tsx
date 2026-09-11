@@ -32,11 +32,14 @@ function FinancialReportModal({
   onClose,
 }: FinancialReportModalProps) {
   const [isScrolling, setIsScrolling] = useState(false);
+  const [isTableScrolling, setIsTableScrolling] = useState(false);
   const scrollTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const tableScrollTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
     return () => {
       if (scrollTimeout.current) clearTimeout(scrollTimeout.current);
+      if (tableScrollTimeout.current) clearTimeout(tableScrollTimeout.current);
     };
   }, []);
 
@@ -47,6 +50,16 @@ function FinancialReportModal({
 
     scrollTimeout.current = setTimeout(() => {
       setIsScrolling(false);
+    }, 700);
+  };
+
+  const handleTransactionTableScroll = () => {
+    setIsTableScrolling(true);
+
+    if (tableScrollTimeout.current) clearTimeout(tableScrollTimeout.current);
+
+    tableScrollTimeout.current = setTimeout(() => {
+      setIsTableScrolling(false);
     }, 700);
   };
 
@@ -78,7 +91,6 @@ function FinancialReportModal({
   const expenseBreakdown = Object.entries(expensesByCategory).sort(
     ([, firstAmount], [, secondAmount]) => secondAmount - firstAmount,
   );
-
   const periodDetail =
     periodStart === null
       ? "All Time"
@@ -187,7 +199,13 @@ function FinancialReportModal({
 
             <section className="mt-6 border-t app-border pt-5">
               <h3 className="text-base font-bold app-text">Transactions</h3>
-              <div className="mt-3 overflow-x-auto">
+              <div
+                onScroll={(event) => {
+                  event.stopPropagation();
+                  handleTransactionTableScroll();
+                }}
+                className={`mt-3 max-h-96 overflow-auto ${isTableScrolling ? "scrollbar-visible" : "scrollbar-hidden"}`}
+              >
                 <table className="w-full min-w-155 text-left text-sm">
                   <thead className="border-b app-border text-xs uppercase tracking-wide app-faint">
                     <tr>
@@ -212,7 +230,7 @@ function FinancialReportModal({
                           {transaction.category}
                         </td>
                         <td
-                          className={`px-3 py-3 font-medium ${transaction.type === "Income" ? "app-primary" : "app-muted"}`}
+                          className={`px-3 py-3 font-medium ${transaction.type === "Income" ? "app-primary" : "app-danger"}`}
                         >
                           {transaction.type}
                         </td>

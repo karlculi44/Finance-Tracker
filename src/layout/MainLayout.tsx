@@ -58,8 +58,8 @@ function MainLayout() {
     useState<Transaction | null>(null);
   const [dateRange, setDateRange] = useState<DateRangeType>("All Time");
   const [isReportOpen, setIsReportOpen] = useState(false);
-  const [isDarkMode, setIsDarkMode] = useState(() =>
-    localStorage.getItem(THEME_STORAGE_KEY) === "dark",
+  const [isDarkMode, setIsDarkMode] = useState(
+    () => localStorage.getItem(THEME_STORAGE_KEY) === "dark",
   );
 
   useEffect(() => {

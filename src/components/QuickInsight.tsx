@@ -18,7 +18,7 @@ function QuickInsight({
           ? "No income recorded"
           : `${remainingPercentage.toFixed(1)}%`}
       </p>
-      <p className="mt-1 text-sm leading-5 text-slate-500">
+      <p className="mt-1 text-sm leading-5">
         of your total income remains after expenses.
       </p>
       <div className="mt-6 h-2 rounded-full bg-slate-200">

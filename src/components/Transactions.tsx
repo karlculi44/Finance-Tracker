@@ -32,7 +32,6 @@ function Transactions({
     "All" | TransactionCategory
   >("All");
   const [searchTerm, setSearchTerm] = useState("");
-  const [visibleCount, setVisibleCount] = useState(10);
   const [isScrolling, setIsScrolling] = useState(false);
   const scrollTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -44,17 +43,14 @@ function Transactions({
 
   const handleFilterChange = (filter: TransactionFilterType) => {
     setSelectedFilter(filter);
-    setVisibleCount(10);
   };
 
   const handleCategoryChange = (category: "All" | TransactionCategory) => {
     setSelectedCategory(category);
-    setVisibleCount(10);
   };
 
   const handleSearchChange = (value: string) => {
     setSearchTerm(value);
-    setVisibleCount(10);
   };
 
   const handleTransactionScroll = () => {
@@ -85,21 +81,6 @@ function Transactions({
       (firstTransaction, secondTransaction) =>
         secondTransaction.date.getTime() - firstTransaction.date.getTime(),
     );
-  const visibleTransactions = filteredTransactions.slice(0, visibleCount);
-  const hasMoreThanTenTransactions = filteredTransactions.length > 10;
-  const allTransactionsVisible = visibleCount >= filteredTransactions.length;
-
-  const handleViewMoreOrLess = () => {
-    if (allTransactionsVisible) {
-      setVisibleCount(10);
-      return;
-    }
-
-    setVisibleCount((currentCount) =>
-      Math.min(currentCount + 10, filteredTransactions.length),
-    );
-  };
-
   return (
     <section className="app-surface rounded-2xl border">
       <div className="flex flex-col gap-4 border-b app-border p-5 sm:flex-row sm:items-center sm:justify-between sm:p-6">
@@ -149,21 +130,10 @@ function Transactions({
             className={`max-h-136 overflow-y-auto pr-1 ${isScrolling ? "scrollbar-visible" : "scrollbar-hidden"}`}
           >
             <TransactionList
-              transactions={visibleTransactions}
+              transactions={filteredTransactions}
               onEdit={onEdit}
               onDelete={onDelete}
             />
-            {hasMoreThanTenTransactions && (
-              <div className="mt-4 flex justify-center pb-1">
-                <button
-                  type="button"
-                  onClick={handleViewMoreOrLess}
-                  className="app-surface-raised app-text rounded-xl border px-4 py-2.5 text-sm font-semibold transition hover:border-(--app-primary) hover:text-(--app-primary)"
-                >
-                  {allTransactionsVisible ? "View Less" : "View More"}
-                </button>
-              </div>
-            )}
           </div>
         ) : normalizedSearchTerm ? (
           <NoResults />
