@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 import formatCurrency from "../utils/formatCurrency";
+import AnimatedNumber from "./AnimatedNumber";
 
 type SummaryCardProps = {
   label: string;
@@ -27,7 +28,7 @@ function SummaryCard({
         <div>
           <p className="text-sm font-medium app-muted">{label}</p>
           <p className="mt-3 text-2xl font-bold tracking-tight app-text">
-            {formatCurrency(value)}
+            <AnimatedNumber value={value} formatter={formatCurrency} />
           </p>
           <p className="mt-1 text-xs font-medium app-faint">
             {detail || "Current balance"}

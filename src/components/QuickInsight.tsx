@@ -1,4 +1,5 @@
 import { CreditCard } from "lucide-react";
+import AnimatedNumber from "./AnimatedNumber";
 
 const REMAINING_INCOME_THRESHOLDS = {
   medium: 30,
@@ -7,12 +8,14 @@ const REMAINING_INCOME_THRESHOLDS = {
 
 type RemainingIncomeStatus = "low" | "medium" | "healthy";
 
-function getRemainingIncomeStatus(
-  percentage: number,
-): RemainingIncomeStatus {
+function getRemainingIncomeStatus(percentage: number): RemainingIncomeStatus {
   if (percentage < REMAINING_INCOME_THRESHOLDS.medium) return "low";
   if (percentage < REMAINING_INCOME_THRESHOLDS.healthy) return "medium";
   return "healthy";
+}
+
+function formatPercentage(value: number) {
+  return `${value.toFixed(1)}%`;
 }
 
 function QuickInsight({
@@ -40,7 +43,7 @@ function QuickInsight({
       >
         {remainingPercentage === null
           ? "No income recorded"
-          : `${remainingPercentage.toFixed(1)}%`}
+          : <AnimatedNumber value={remainingPercentage} formatter={formatPercentage} />}
       </p>
       <p className="mt-1 text-sm leading-5">
         of your total income remains after expenses.
