@@ -12,6 +12,7 @@ type DateRangeType =
 type SummaryCardsDataType = {
   label: string;
   value: number;
+  detail: string;
   icon: ReactNode;
   tone: string;
 };

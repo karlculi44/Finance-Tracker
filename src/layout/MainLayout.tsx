@@ -162,6 +162,7 @@ function MainLayout() {
               balance={balance}
               totalIncome={filteredIncome}
               totalExpenses={filteredExpenses}
+              dateRange={dateRange}
             />
             <Transactions
               transactions={filteredTransactions}
