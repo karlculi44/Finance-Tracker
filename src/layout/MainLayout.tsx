@@ -10,9 +10,14 @@ import SummaryCards from "../components/SummaryCards";
 import Header from "../components/Header";
 import Transactions from "../components/Transactions";
 import TransactionModal from "../components/TransactionModal";
+import ConfirmDeleteModal from "../components/ConfirmDeleteModal";
 
 function MainLayout() {
   const [isTransactionModalOpen, setIsTransactionModalOpen] = useState(false);
+  const [isConfirmDeleteModalOpen, setIsConfirmDeleteModalOpen] =
+    useState(false);
+  const [transactionToDelete, setTransactionToDelete] =
+    useState<Transaction | null>(null);
   const [transactions, setTransactions] = useState<Transaction[]>(
     getTransactionsFromStorage,
   );
@@ -43,11 +48,31 @@ function MainLayout() {
   };
 
   const handleDeleteTransaction = (transactionId: string) => {
+    const transaction = transactions.find(
+      (currentTransaction) => currentTransaction.id === transactionId,
+    );
+
+    if (!transaction) return;
+
+    setTransactionToDelete(transaction);
+    setIsConfirmDeleteModalOpen(true);
+  };
+
+  const handleConfirmDelete = () => {
+    if (!transactionToDelete) return;
+
     const newTransactions = transactions.filter(
-      (transaction) => transaction.id !== transactionId,
+      (transaction) => transaction.id !== transactionToDelete.id,
     );
     setTransactions(newTransactions);
     saveTransactionsToStorage(newTransactions);
+    setTransactionToDelete(null);
+    setIsConfirmDeleteModalOpen(false);
+  };
+
+  const handleCloseConfirmDeleteModal = () => {
+    setTransactionToDelete(null);
+    setIsConfirmDeleteModalOpen(false);
   };
 
   const handleCloseTransactionModal = () => {
@@ -95,6 +120,13 @@ function MainLayout() {
           onClose={handleCloseTransactionModal}
           onSubmit={handleFormSubmit}
           transactionToEdit={transactionToEdit}
+        />
+
+        <ConfirmDeleteModal
+          isOpen={isConfirmDeleteModalOpen}
+          description={transactionToDelete?.description}
+          onClose={handleCloseConfirmDeleteModal}
+          onConfirm={handleConfirmDelete}
         />
       </div>
     </main>
