@@ -13,6 +13,7 @@ import Header from "../components/Header";
 import Transactions from "../components/Transactions";
 import TransactionModal from "../components/TransactionModal";
 import ConfirmDeleteModal from "../components/ConfirmDeleteModal";
+import FinancialReportModal from "../components/FinancialReportModal";
 
 function getDateRangeStart(dateRange: DateRangeType, currentDate: Date) {
   const startDate = new Date(currentDate);
@@ -54,6 +55,7 @@ function MainLayout() {
   const [transactionToEdit, setTransactionToEdit] =
     useState<Transaction | null>(null);
   const [dateRange, setDateRange] = useState<DateRangeType>("All Time");
+  const [isReportOpen, setIsReportOpen] = useState(false);
 
   const totalIncome = transactions.reduce(
     (total, transaction) =>
@@ -170,6 +172,7 @@ function MainLayout() {
               onDelete={handleDeleteTransaction}
               dateRange={dateRange}
               onDateRangeChange={setDateRange}
+              onViewReport={() => setIsReportOpen(true)}
             />
           </div>
           <aside className="order-1 rounded-2xl  p-5 lg:order-2 lg:col-start-2 lg:row-start-1">
@@ -211,6 +214,16 @@ function MainLayout() {
           description={transactionToDelete?.description}
           onClose={handleCloseConfirmDeleteModal}
           onConfirm={handleConfirmDelete}
+        />
+
+        <FinancialReportModal
+          isOpen={isReportOpen}
+          dateRange={dateRange}
+          periodStart={dateRangeStart}
+          periodEnd={new Date()}
+          transactions={filteredTransactions}
+          currentBalance={balance}
+          onClose={() => setIsReportOpen(false)}
         />
       </div>
     </main>

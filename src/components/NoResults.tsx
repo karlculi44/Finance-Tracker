@@ -6,7 +6,9 @@ function NoResults() {
       <div className="rounded-2xl bg-slate-100 p-4 text-slate-500">
         <SearchX size={25} />
       </div>
-      <h2 className="mt-5 text-lg font-bold text-slate-950">No results found</h2>
+      <h2 className="mt-5 text-lg font-bold text-slate-950">
+        No results found
+      </h2>
       <p className="mt-2 max-w-xs text-sm leading-6 text-slate-500">
         Try searching for a different transaction or category.
       </p>
