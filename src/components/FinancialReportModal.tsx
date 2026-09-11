@@ -81,7 +81,8 @@ function FinancialReportModal({
               Financial Report
             </h2>
             <p className="mt-1 text-sm text-slate-500">
-              Period: <span className="font-semibold text-slate-700">{dateRange}</span>
+              Period:{" "}
+              <span className="font-semibold text-slate-700">{dateRange}</span>
             </p>
             <p className="mt-1 text-xs text-slate-400">{periodDetail}</p>
           </div>
@@ -123,8 +124,12 @@ function FinancialReportModal({
                   key={label}
                   className="rounded-xl border border-slate-200 bg-slate-50 p-4"
                 >
-                  <p className="text-xs font-semibold text-slate-500">{label}</p>
-                  <p className="mt-2 text-lg font-bold text-slate-950">{value}</p>
+                  <p className="text-xs font-semibold text-slate-500">
+                    {label}
+                  </p>
+                  <p className="mt-2 text-lg font-bold text-slate-950">
+                    {value}
+                  </p>
                 </div>
               ))}
             </div>
@@ -134,7 +139,9 @@ function FinancialReportModal({
                 Expense Breakdown
               </h3>
               {expenseBreakdown.length === 0 ? (
-                <p className="mt-4 text-sm text-slate-500">No expenses recorded.</p>
+                <p className="mt-4 text-sm text-slate-500">
+                  No expenses recorded.
+                </p>
               ) : (
                 <div className="mt-3 space-y-3">
                   {expenseBreakdown.map(([category, amount]) => (
@@ -160,7 +167,9 @@ function FinancialReportModal({
             </section>
 
             <section className="mt-6 border-t border-slate-100 pt-5">
-              <h3 className="text-base font-bold text-slate-950">Transactions</h3>
+              <h3 className="text-base font-bold text-slate-950">
+                Transactions
+              </h3>
               <div className="mt-3 overflow-x-auto">
                 <table className="w-full min-w-155 text-left text-sm">
                   <thead className="border-b border-slate-200 text-xs uppercase tracking-wide text-slate-400">
@@ -171,7 +180,9 @@ function FinancialReportModal({
                       <th className="px-3 py-3 font-semibold">Category</th>
                       <th className="px-3 py-3 font-semibold">Type</th>
                       <th className="px-3 py-3 font-semibold">Date</th>
-                      <th className="px-3 py-3 text-right font-semibold">Amount</th>
+                      <th className="px-3 py-3 text-right font-semibold">
+                        Amount
+                      </th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-slate-100">
