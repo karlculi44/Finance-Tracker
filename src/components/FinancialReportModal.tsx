@@ -1,4 +1,5 @@
 import { X } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
 import type { DateRangeType } from "../types/FinanceSummary";
 import type { Transaction } from "../types/Transaction";
 import formatCurrency from "../utils/formatCurrency";
@@ -30,6 +31,25 @@ function FinancialReportModal({
   currentBalance,
   onClose,
 }: FinancialReportModalProps) {
+  const [isScrolling, setIsScrolling] = useState(false);
+  const scrollTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  useEffect(() => {
+    return () => {
+      if (scrollTimeout.current) clearTimeout(scrollTimeout.current);
+    };
+  }, []);
+
+  const handleReportScroll = () => {
+    setIsScrolling(true);
+
+    if (scrollTimeout.current) clearTimeout(scrollTimeout.current);
+
+    scrollTimeout.current = setTimeout(() => {
+      setIsScrolling(false);
+    }, 700);
+  };
+
   if (!isOpen) return null;
 
   const totalIncome = transactions.reduce(
@@ -65,12 +85,17 @@ function FinancialReportModal({
       : `${formatDate(periodStart)} - ${formatDate(periodEnd)}`;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#07120f]/70 p-4">
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center bg-[#07120f]/70 p-4"
+      onClick={onClose}
+    >
       <div
         role="dialog"
         aria-modal="true"
         aria-labelledby="financial-report-title"
-        className="app-surface max-h-[90vh] w-full max-w-4xl overflow-y-auto rounded-2xl border p-5 sm:p-6"
+        onClick={(event) => event.stopPropagation()}
+        onScroll={handleReportScroll}
+        className={`app-surface max-h-[90vh] w-full max-w-4xl overflow-y-auto rounded-2xl border p-5 sm:p-6 ${isScrolling ? "scrollbar-visible" : "scrollbar-hidden"}`}
       >
         <div className="flex items-start justify-between gap-4 border-b app-border pb-5">
           <div>
@@ -194,7 +219,9 @@ function FinancialReportModal({
                         <td className="whitespace-nowrap px-3 py-3 app-muted">
                           {formatDate(transaction.date)}
                         </td>
-                        <td className="whitespace-nowrap px-3 py-3 text-right font-semibold app-text">
+                        <td
+                          className={`whitespace-nowrap px-3 py-3 text-right font-semibold ${transaction.type === "Income" ? "app-primary" : "app-danger"}`}
+                        >
                           {transaction.type === "Income" ? "+" : "-"}{" "}
                           {formatCurrency(transaction.amount)}
                         </td>

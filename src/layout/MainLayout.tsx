@@ -1,5 +1,4 @@
-import { CreditCard } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { toast, ToastContainer } from "react-toastify";
 import type { TransactionForm, Transaction } from "../types/Transaction";
 import type { DateRangeType } from "../types/FinanceSummary";
@@ -11,9 +10,12 @@ import {
 import SummaryCards from "../components/SummaryCards";
 import Header from "../components/Header";
 import Transactions from "../components/Transactions";
+import QuickInsight from "../components/QuickInsight";
 import TransactionModal from "../components/TransactionModal";
 import ConfirmDeleteModal from "../components/ConfirmDeleteModal";
 import FinancialReportModal from "../components/FinancialReportModal";
+
+const THEME_STORAGE_KEY = "expense-tracker-theme";
 
 function getDateRangeStart(dateRange: DateRangeType, currentDate: Date) {
   const startDate = new Date(currentDate);
@@ -56,7 +58,13 @@ function MainLayout() {
     useState<Transaction | null>(null);
   const [dateRange, setDateRange] = useState<DateRangeType>("All Time");
   const [isReportOpen, setIsReportOpen] = useState(false);
-  const [isDarkMode, setIsDarkMode] = useState(false);
+  const [isDarkMode, setIsDarkMode] = useState(() =>
+    localStorage.getItem(THEME_STORAGE_KEY) === "dark",
+  );
+
+  useEffect(() => {
+    localStorage.setItem(THEME_STORAGE_KEY, isDarkMode ? "dark" : "light");
+  }, [isDarkMode]);
 
   const totalIncome = transactions.reduce(
     (total, transaction) =>
@@ -165,12 +173,6 @@ function MainLayout() {
         />
         <div className="mt-8 grid gap-6 lg:mt-10 lg:grid-cols-[minmax(0,1fr)_300px]">
           <div className="order-2 space-y-6 lg:order-1 lg:col-start-1 lg:row-start-1">
-            <SummaryCards
-              balance={balance}
-              totalIncome={filteredIncome}
-              totalExpenses={filteredExpenses}
-              dateRange={dateRange}
-            />
             <Transactions
               transactions={filteredTransactions}
               onEdit={handleEditTransaction}
@@ -180,29 +182,17 @@ function MainLayout() {
               onViewReport={() => setIsReportOpen(true)}
             />
           </div>
-          <aside className=" order-1 rounded-2xl  p-5 lg:order-2 lg:col-start-2 lg:row-start-1">
-            <div className="flex items-center gap-2 text-sm font-bold app-text">
-              <CreditCard size={17} className="app-primary" />
-              Quick insight
-            </div>
-            <p className="mt-5 text-3xl font-bold tracking-tight app-text">
-              {remainingPercentage === null
-                ? "No income recorded"
-                : `${remainingPercentage.toFixed(1)}%`}
-            </p>
-            <p className="mt-1 text-sm leading-5 text-slate-500">
-              of your total income remains after expenses.
-            </p>
-            <div className="mt-6 h-2 rounded-full bg-slate-200">
-              <div
-                className="app-primary-bg h-2 rounded-full transition-[width]"
-                style={{ width: `${remainingBarWidth}%` }}
-              />
-            </div>
-            <div className="mt-3 flex justify-between text-xs font-medium app-faint">
-              <span>Remaining</span>
-              <span>Spent</span>
-            </div>
+          <aside className="order-1 space-y-6 p-0 lg:order-2 lg:col-start-2 lg:row-start-1">
+            <QuickInsight
+              remainingPercentage={remainingPercentage}
+              remainingBarWidth={remainingBarWidth}
+            />
+            <SummaryCards
+              balance={balance}
+              totalIncome={filteredIncome}
+              totalExpenses={filteredExpenses}
+              dateRange={dateRange}
+            />
           </aside>
         </div>
 

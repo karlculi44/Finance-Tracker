@@ -1,5 +1,5 @@
 import { Search } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import type {
   Transaction,
   TransactionCategory,
@@ -33,6 +33,14 @@ function Transactions({
   >("All");
   const [searchTerm, setSearchTerm] = useState("");
   const [visibleCount, setVisibleCount] = useState(10);
+  const [isScrolling, setIsScrolling] = useState(false);
+  const scrollTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  useEffect(() => {
+    return () => {
+      if (scrollTimeout.current) clearTimeout(scrollTimeout.current);
+    };
+  }, []);
 
   const handleFilterChange = (filter: TransactionFilterType) => {
     setSelectedFilter(filter);
@@ -47,6 +55,16 @@ function Transactions({
   const handleSearchChange = (value: string) => {
     setSearchTerm(value);
     setVisibleCount(10);
+  };
+
+  const handleTransactionScroll = () => {
+    setIsScrolling(true);
+
+    if (scrollTimeout.current) clearTimeout(scrollTimeout.current);
+
+    scrollTimeout.current = setTimeout(() => {
+      setIsScrolling(false);
+    }, 700);
   };
 
   const normalizedSearchTerm = searchTerm.trim().toLowerCase();
@@ -93,25 +111,25 @@ function Transactions({
             </p>
           </div>
         </div>
-        <TransactionFilters
-          selectedFilter={selectedFilter}
-          onFilterChange={handleFilterChange}
-          selectedCategory={selectedCategory}
-          onCategoryChange={handleCategoryChange}
-          selectedDateRange={dateRange}
-          onDateRangeChange={onDateRangeChange}
-        />
-      </div>
-      <div className="p-5 sm:p-6">
-        <div className="mb-3 flex justify-end">
+        <div className="flex flex-col items-stretch gap-3 sm:items-end">
           <button
             type="button"
             onClick={onViewReport}
-            className="app-primary-bg shrink-0 rounded-xl px-3 py-2 text-xs font-semibold text-white transition hover:-translate-y-0.5"
+            className="app-primary-bg self-end rounded-xl px-3 py-2 text-xs font-semibold text-white transition hover:-translate-y-0.5"
           >
             View Report
           </button>
+          <TransactionFilters
+            selectedFilter={selectedFilter}
+            onFilterChange={handleFilterChange}
+            selectedCategory={selectedCategory}
+            onCategoryChange={handleCategoryChange}
+            selectedDateRange={dateRange}
+            onDateRangeChange={onDateRangeChange}
+          />
         </div>
+      </div>
+      <div className="p-5 sm:p-6">
         <label className="relative block">
           <Search
             size={17}
@@ -126,24 +144,27 @@ function Transactions({
           />
         </label>
         {filteredTransactions.length > 0 ? (
-          <>
+          <div
+            onScroll={handleTransactionScroll}
+            className={`max-h-136 overflow-y-auto pr-1 ${isScrolling ? "scrollbar-visible" : "scrollbar-hidden"}`}
+          >
             <TransactionList
               transactions={visibleTransactions}
               onEdit={onEdit}
               onDelete={onDelete}
             />
             {hasMoreThanTenTransactions && (
-              <div className="mt-4 flex justify-center">
+              <div className="mt-4 flex justify-center pb-1">
                 <button
                   type="button"
                   onClick={handleViewMoreOrLess}
-                  className="app-surface-raised app-text rounded-xl border px-4 py-2.5 text-sm font-semibold transition hover:border-[var(--app-primary)] hover:text-[var(--app-primary)]"
+                  className="app-surface-raised app-text rounded-xl border px-4 py-2.5 text-sm font-semibold transition hover:border-(--app-primary) hover:text-(--app-primary)"
                 >
                   {allTransactionsVisible ? "View Less" : "View More"}
                 </button>
               </div>
             )}
-          </>
+          </div>
         ) : normalizedSearchTerm ? (
           <NoResults />
         ) : (

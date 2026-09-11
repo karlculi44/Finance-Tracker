@@ -42,7 +42,7 @@ function SummaryCards({
 
   return (
     <section
-      className="grid gap-4 md:grid-cols-3"
+      className="grid gap-4 md:grid-cols-3 lg:grid-cols-1"
       aria-label="Financial summary"
     >
       {summaryCardsData.map(({ label, value, detail, icon, tone }) => (

@@ -74,7 +74,7 @@ function TransactionItem({
       </div>
       <div className="flex shrink-0 flex-col items-end gap-1">
         <p
-          className={`whitespace-nowrap text-sm font-bold ${isPositive ? "app-primary" : "app-text"}`}
+          className={`whitespace-nowrap text-sm font-bold ${isPositive ? "app-primary" : "app-danger"}`}
         >
           {isPositive ? "+" : "-"} {formatCurrency(amount)}
         </p>

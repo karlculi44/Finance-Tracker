@@ -162,7 +162,7 @@ function TransactionModal({
               </select>
             </label>
           </div>
-          <label className="grid gap-2 text-sm font-semibold text-slate-700">
+          <label className="grid gap-2 text-sm font-semibold">
             Date
             <div className="relative">
               <input

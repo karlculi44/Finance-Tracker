@@ -136,6 +136,30 @@ select {
   background: var(--app-surface);
 }
 
+.scrollbar-hidden,
+.scrollbar-visible {
+  scrollbar-width: thin;
+  scrollbar-color: transparent transparent;
+}
+
+.scrollbar-visible {
+  scrollbar-color: var(--app-border) transparent;
+}
+
+.scrollbar-hidden::-webkit-scrollbar,
+.scrollbar-visible::-webkit-scrollbar {
+  width: 8px;
+}
+
+.scrollbar-hidden::-webkit-scrollbar-thumb {
+  background: transparent;
+}
+
+.scrollbar-visible::-webkit-scrollbar-thumb {
+  background: var(--app-border);
+  border-radius: 999px;
+}
+
 @media (prefers-reduced-motion: no-preference) {
   .app-shell .app-surface {
     transition:
