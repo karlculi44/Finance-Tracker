@@ -51,6 +51,7 @@ function MainLayout() {
     setTransactions(newTransactions);
     saveTransactionsToStorage(newTransactions);
     if (!transactionToEdit) toast.success("Transaction added successfully.");
+    if (transactionToEdit) toast.success("Transaction updated successfully.");
   };
 
   const handleOpenTransactionModal = () => {
@@ -84,6 +85,7 @@ function MainLayout() {
     saveTransactionsToStorage(newTransactions);
     setTransactionToDelete(null);
     setIsConfirmDeleteModalOpen(false);
+    toast.success("Transaction deleted successfully.");
   };
 
   const handleCloseConfirmDeleteModal = () => {
@@ -102,7 +104,7 @@ function MainLayout() {
       <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8 lg:py-12">
         <Header onAddTransaction={handleOpenTransactionModal} />
         <div className="mt-8 grid gap-6 lg:mt-10 lg:grid-cols-[minmax(0,1fr)_300px]">
-          <div className="space-y-6">
+          <div className="order-2 space-y-6 lg:order-1 lg:col-start-1 lg:row-start-1">
             <SummaryCards
               totalIncome={totalIncome}
               totalExpenses={totalExpenses}
@@ -113,7 +115,7 @@ function MainLayout() {
               onDelete={handleDeleteTransaction}
             />
           </div>
-          <aside className="hidden rounded-2xl border border-slate-200 bg-slate-50/70 p-5 lg:block">
+          <aside className="order-1 rounded-2xl  p-5 lg:order-2 lg:col-start-2 lg:row-start-1">
             <div className="flex items-center gap-2 text-sm font-bold text-slate-800">
               <CreditCard size={17} className="text-slate-400" />
               Quick insight
@@ -131,8 +133,8 @@ function MainLayout() {
               />
             </div>
             <div className="mt-3 flex justify-between text-xs font-medium text-slate-400">
-              <span>Spent</span>
               <span>Remaining</span>
+              <span>Spent</span>
             </div>
           </aside>
         </div>

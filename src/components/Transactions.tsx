@@ -23,15 +23,51 @@ function Transactions({
   const [selectedCategory, setSelectedCategory] = useState<
     "All" | TransactionCategory
   >("All");
+  const [searchTerm, setSearchTerm] = useState("");
+  const [visibleCount, setVisibleCount] = useState(10);
 
+  const handleFilterChange = (filter: TransactionFilterType) => {
+    setSelectedFilter(filter);
+    setVisibleCount(10);
+  };
+
+  const handleCategoryChange = (category: "All" | TransactionCategory) => {
+    setSelectedCategory(category);
+    setVisibleCount(10);
+  };
+
+  const handleSearchChange = (value: string) => {
+    setSearchTerm(value);
+    setVisibleCount(10);
+  };
+
+  const normalizedSearchTerm = searchTerm.trim().toLowerCase();
   const filteredTransactions = transactions.filter((transaction) => {
     const matchesType =
       selectedFilter === "All" || transaction.type === selectedFilter;
     const matchesCategory =
       selectedCategory === "All" || transaction.category === selectedCategory;
+    const matchesSearch =
+      normalizedSearchTerm === "" ||
+      transaction.description.toLowerCase().includes(normalizedSearchTerm) ||
+      transaction.category.toLowerCase().includes(normalizedSearchTerm);
 
-    return matchesType && matchesCategory;
+    return matchesType && matchesCategory && matchesSearch;
   });
+  const visibleTransactions = filteredTransactions.slice(0, visibleCount);
+  const hasMoreThanTenTransactions = filteredTransactions.length > 10;
+  const allTransactionsVisible = visibleCount >= filteredTransactions.length;
+
+  const handleViewMoreOrLess = () => {
+    if (allTransactionsVisible) {
+      setVisibleCount(10);
+      return;
+    }
+
+    setVisibleCount((currentCount) =>
+      Math.min(currentCount + 10, filteredTransactions.length),
+    );
+  };
 
   return (
     <section className="rounded-2xl border border-slate-200 bg-white shadow-[0_8px_24px_rgba(15,23,42,0.04)]">
@@ -44,9 +80,9 @@ function Transactions({
         </div>
         <TransactionFilters
           selectedFilter={selectedFilter}
-          onFilterChange={setSelectedFilter}
+          onFilterChange={handleFilterChange}
           selectedCategory={selectedCategory}
-          onCategoryChange={setSelectedCategory}
+          onCategoryChange={handleCategoryChange}
         />
       </div>
       <div className="p-5 sm:p-6">
@@ -56,16 +92,30 @@ function Transactions({
             className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400"
           />
           <input
+            value={searchTerm}
+            onChange={(event) => handleSearchChange(event.target.value)}
+            aria-label="Search transactions"
             className="w-full rounded-xl border border-slate-200 bg-slate-50 py-2.5 pl-10 pr-4 text-sm text-slate-800 outline-none placeholder:text-slate-400 focus:border-slate-400"
             placeholder="Search transactions..."
           />
         </label>
         {filteredTransactions.length > 0 ? (
-          <TransactionList
-            transactions={filteredTransactions}
-            onEdit={onEdit}
-            onDelete={onDelete}
-          />
+          <>
+            <TransactionList
+              transactions={visibleTransactions}
+              onEdit={onEdit}
+              onDelete={onDelete}
+            />
+            {hasMoreThanTenTransactions && (
+              <button
+                type="button"
+                onClick={handleViewMoreOrLess}
+                className="mt-4 w-full rounded-xl border border-slate-200 px-4 py-2.5 text-sm font-semibold text-slate-600 transition hover:border-slate-300 hover:bg-slate-50 hover:text-slate-900"
+              >
+                {allTransactionsVisible ? "View Less" : "View More"}
+              </button>
+            )}
+          </>
         ) : (
           <EmptyState />
         )}
