@@ -33,6 +33,11 @@ export type AppOutletContext = {
   onDelete: (transactionId: string) => void;
   onEdit: (transaction: Transaction) => void;
   onViewReport: () => void;
+  userName: string;
+  onUserNameChange: (userName: string) => void;
+  isDarkMode: boolean;
+  onToggleTheme: () => void;
+  onResetApplication: () => void;
 };
 
 function getDateRangeStart(dateRange: DateRangeType, currentDate: Date) {
@@ -87,6 +92,7 @@ function MainLayout() {
   const [isDarkMode, setIsDarkMode] = useState(
     () => localStorage.getItem(THEME_STORAGE_KEY) === "dark",
   );
+  const [userName, setUserName] = useState(getUserName);
 
   useEffect(() => {
     localStorage.setItem(THEME_STORAGE_KEY, isDarkMode ? "dark" : "light");
@@ -193,14 +199,16 @@ function MainLayout() {
   };
 
   return (
-    <main className={`app-shell app-page-enter ${isDarkMode ? "dark-mode" : ""}`}>
+    <main
+      className={`app-shell app-page-enter ${isDarkMode ? "dark-mode" : ""}`}
+    >
       <ToastContainer position="top-center" autoClose={3000} />
       <div className="mx-auto max-w-7xl px-4 py-8 pb-24 sm:px-6 lg:px-8 lg:py-12 lg:pb-12">
         <Header
           onAddTransaction={handleOpenTransactionModal}
           isDarkMode={isDarkMode}
           onToggleTheme={() => setIsDarkMode((current) => !current)}
-          userName={getUserName()}
+          userName={userName}
         />
         <AddTransactionAction onClick={handleOpenTransactionModal} />
         <div className="mt-8 grid gap-6 lg:mt-10 lg:grid-cols-[180px_minmax(0,1fr)]">
@@ -217,6 +225,14 @@ function MainLayout() {
                   remainingBarWidth,
                   remainingPercentage,
                   transactions,
+                  userName,
+                  onUserNameChange: setUserName,
+                  isDarkMode,
+                  onToggleTheme: () => setIsDarkMode((current) => !current),
+                  onResetApplication: () => {
+                    localStorage.clear();
+                    window.location.assign("/");
+                  },
                   onAddTransaction: handleOpenTransactionModal,
                   onDateRangeChange: setDateRange,
                   onDelete: handleDeleteTransaction,

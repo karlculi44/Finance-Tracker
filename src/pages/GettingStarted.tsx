@@ -86,7 +86,11 @@ function GettingStarted({ onComplete }: { onComplete: () => void }) {
                 />
               </label>
               {error && (
-                <p id="name-error" className="mt-2 text-sm text-rose-600" role="alert">
+                <p
+                  id="name-error"
+                  className="mt-2 text-sm text-rose-600"
+                  role="alert"
+                >
                   {error}
                 </p>
               )}

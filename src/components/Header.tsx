@@ -1,4 +1,5 @@
-import { Moon, Plus, Sun } from "lucide-react";
+import { Moon, Plus, Settings, Sun } from "lucide-react";
+import { Link } from "react-router-dom";
 
 type HeaderProps = {
   onAddTransaction: () => void;
@@ -47,6 +48,13 @@ function Header({
         >
           {isDarkMode ? <Sun size={18} /> : <Moon size={18} />}
         </button>
+        <Link
+          to="/settings"
+          aria-label="Open settings"
+          className="app-surface app-text rounded-xl border p-3 transition hover:-translate-y-0.5"
+        >
+          <Settings size={18} aria-hidden="true" />
+        </Link>
         <button
           onClick={onAddTransaction}
           className="app-primary-bg hidden w-fit items-center justify-center gap-2 rounded-xl px-4 py-3 text-sm font-semibold text-white shadow-sm transition hover:-translate-y-0.5 lg:inline-flex"
