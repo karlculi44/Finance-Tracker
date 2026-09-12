@@ -1,11 +1,11 @@
 import { useOutletContext } from "react-router-dom";
 import { ArrowDownLeft, ArrowUpRight, TrendingUp } from "lucide-react";
 import Analytics from "../components/Analytics";
-import QuickInsight from "../components/QuickInsight";
+import ExpenseDistribution from "../components/ExpenseDistribution";
+
 import SummaryCard from "../components/SummaryCard";
 import { dateRangeOptions } from "../types/FinanceSummary";
 import type { AppOutletContext } from "../layout/MainLayout";
-import formatCurrency from "../utils/formatCurrency";
 
 function AnalyticsPage() {
   const {
@@ -13,8 +13,7 @@ function AnalyticsPage() {
     filteredExpenses,
     filteredIncome,
     filteredTransactions,
-    remainingBarWidth,
-    remainingPercentage,
+
     onDateRangeChange,
   } = useOutletContext<AppOutletContext>();
 
@@ -76,40 +75,10 @@ function AnalyticsPage() {
           accent="app-accent-indigo"
         />
       </div>
-      <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_280px]">
-        <QuickInsight
-          remainingPercentage={remainingPercentage}
-          remainingBarWidth={remainingBarWidth}
-        />
-        <section className="app-surface rounded-2xl border p-5 sm:p-6">
-          <h2 className="text-lg font-bold app-text">Expense Breakdown</h2>
-          <div className="mt-4 space-y-3">
-            {Object.entries(
-              filteredTransactions.reduce<Record<string, number>>(
-                (totals, transaction) => {
-                  if (transaction.type === "Expense") {
-                    totals[transaction.category] =
-                      (totals[transaction.category] ?? 0) + transaction.amount;
-                  }
-                  return totals;
-                },
-                {},
-              ),
-            )
-              .sort(([, first], [, second]) => second - first)
-              .map(([category, amount]) => (
-                <div
-                  key={category}
-                  className="flex items-center justify-between gap-4 text-sm"
-                >
-                  <span className="app-muted">{category}</span>
-                  <span className="font-semibold app-text">
-                    {formatCurrency(amount)}
-                  </span>
-                </div>
-              ))}
-          </div>
-        </section>
+      <div>
+        <div className="min-w-0">
+          <ExpenseDistribution transactions={filteredTransactions} />
+        </div>
       </div>
     </div>
   );

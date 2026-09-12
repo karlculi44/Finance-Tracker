@@ -27,6 +27,7 @@ function Home() {
             totalExpenses={filteredExpenses}
             dateRange={dateRange}
           />
+
           <FinancialOverview
             transactions={filteredTransactions}
             dateRange={dateRange}

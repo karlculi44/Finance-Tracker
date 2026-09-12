@@ -32,7 +32,7 @@ function QuickInsight({
 
   return (
     <div
-      className={`app-surface rounded-2xl border p-5 ${status ? `app-status-${status}` : ""}`}
+      className={`app-surface h-full rounded-2xl border p-5 ${status ? `app-status-${status}` : ""}`}
     >
       <div className="flex items-center gap-2 text-sm font-bold app-text">
         <CreditCard size={17} className="app-primary" />

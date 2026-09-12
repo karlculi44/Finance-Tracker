@@ -225,6 +225,27 @@ select {
   border-radius: 999px;
 }
 
+@keyframes app-tooltip-glide {
+  from {
+    opacity: 0;
+    transform: translateY(5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.app-chart-tooltip {
+  animation: app-tooltip-glide 180ms ease-out;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .app-chart-tooltip {
+    animation: none;
+  }
+}
+
 @media (prefers-reduced-motion: no-preference) {
   .app-shell .app-surface {
     transition:

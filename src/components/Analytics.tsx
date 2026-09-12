@@ -62,6 +62,7 @@ function Analytics({
                 width={78}
               />
               <Tooltip
+                wrapperClassName="app-chart-tooltip"
                 contentStyle={{
                   backgroundColor: "var(--app-surface)",
                   border: "1px solid var(--app-border)",
