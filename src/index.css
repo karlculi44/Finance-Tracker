@@ -236,12 +236,33 @@ select {
   }
 }
 
+@keyframes app-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.app-page-enter {
+  animation: app-fade-in 260ms ease-out;
+}
+
+.onboarding-step {
+  animation: app-fade-in 220ms ease-out;
+}
+
 .app-chart-tooltip {
   animation: app-tooltip-glide 180ms ease-out;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .app-chart-tooltip {
+  .app-chart-tooltip,
+  .app-page-enter,
+  .onboarding-step {
     animation: none;
   }
 }

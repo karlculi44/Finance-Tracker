@@ -14,6 +14,7 @@ import ConfirmDeleteModal from "../components/ConfirmDeleteModal";
 import FinancialReportModal from "../components/FinancialReportModal";
 import Navigation from "../components/Navigation";
 import { Outlet } from "react-router-dom";
+import { getUserName } from "../utils/onboardingStorage";
 
 const THEME_STORAGE_KEY = "expense-tracker-theme";
 const DATE_RANGE_STORAGE_KEY = "expense-tracker-date-range";
@@ -192,13 +193,14 @@ function MainLayout() {
   };
 
   return (
-    <main className={`app-shell ${isDarkMode ? "dark-mode" : ""}`}>
+    <main className={`app-shell app-page-enter ${isDarkMode ? "dark-mode" : ""}`}>
       <ToastContainer position="top-center" autoClose={3000} />
       <div className="mx-auto max-w-7xl px-4 py-8 pb-24 sm:px-6 lg:px-8 lg:py-12 lg:pb-12">
         <Header
           onAddTransaction={handleOpenTransactionModal}
           isDarkMode={isDarkMode}
           onToggleTheme={() => setIsDarkMode((current) => !current)}
+          userName={getUserName()}
         />
         <AddTransactionAction onClick={handleOpenTransactionModal} />
         <div className="mt-8 grid gap-6 lg:mt-10 lg:grid-cols-[180px_minmax(0,1fr)]">

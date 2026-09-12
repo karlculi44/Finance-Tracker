@@ -4,9 +4,25 @@ type HeaderProps = {
   onAddTransaction: () => void;
   isDarkMode: boolean;
   onToggleTheme: () => void;
+  userName: string;
 };
 
-function Header({ onAddTransaction, isDarkMode, onToggleTheme }: HeaderProps) {
+function getTimeGreeting() {
+  const hour = new Date().getHours();
+
+  if (hour >= 5 && hour < 12) return "Good morning";
+  if (hour >= 12 && hour < 18) return "Good afternoon";
+  return "Good evening";
+}
+
+function Header({
+  onAddTransaction,
+  isDarkMode,
+  onToggleTheme,
+  userName,
+}: HeaderProps) {
+  const greeting = getTimeGreeting();
+
   return (
     <header className="flex flex-col gap-6 sm:flex-row sm:items-start sm:justify-between">
       <div>
@@ -14,10 +30,12 @@ function Header({ onAddTransaction, isDarkMode, onToggleTheme }: HeaderProps) {
           Personal finance dashboard
         </p>
         <h1 className="text-3xl font-bold tracking-tight app-text sm:text-4xl">
-          Your money, in focus.
+          {userName ? `${greeting}, ${userName}` : "Your money, in focus."}
         </h1>
         <p className="mt-2 max-w-md text-sm leading-6 app-muted">
-          Make clearer decisions with a calm view of your cash flow.
+          {userName
+            ? "Here is how your finances are looking today."
+            : "Make clearer decisions with a calm view of your cash flow."}
         </p>
       </div>
       <div className="flex items-center gap-2">
