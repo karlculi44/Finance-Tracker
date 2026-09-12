@@ -96,7 +96,7 @@ function Transactions({
           <button
             type="button"
             onClick={onViewReport}
-            className="app-primary-bg self-end rounded-xl px-3 py-2 text-xs font-semibold text-white transition hover:-translate-y-0.5"
+            className="app-primary-bg self-start rounded-xl px-3 py-2 text-xs font-semibold text-white transition hover:-translate-y-0.5 sm:self-end"
           >
             View Report
           </button>

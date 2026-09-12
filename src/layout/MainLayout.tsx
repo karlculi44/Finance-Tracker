@@ -15,7 +15,6 @@ import FinancialReportModal from "../components/FinancialReportModal";
 import Navigation from "../components/Navigation";
 import { Outlet } from "react-router-dom";
 import { getUserName } from "../utils/onboardingStorage";
-import { seedTransactions } from "./../utils/seed";
 
 const THEME_STORAGE_KEY = "expense-tracker-theme";
 const DATE_RANGE_STORAGE_KEY = "expense-tracker-date-range";
@@ -69,11 +68,6 @@ function getDateRangeStart(dateRange: DateRangeType, currentDate: Date) {
   }
 }
 
-function getInitialTransactions() {
-  seedTransactions();
-  return getTransactionsFromStorage();
-}
-
 function getStoredDateRange(): DateRangeType {
   const storedDateRange = localStorage.getItem(DATE_RANGE_STORAGE_KEY);
 
@@ -89,7 +83,7 @@ function MainLayout() {
   const [transactionToDelete, setTransactionToDelete] =
     useState<Transaction | null>(null);
   const [transactions, setTransactions] = useState<Transaction[]>(
-    getInitialTransactions,
+    getTransactionsFromStorage,
   );
   const [transactionToEdit, setTransactionToEdit] =
     useState<Transaction | null>(null);
