@@ -28,7 +28,7 @@ function Analytics({
 
   return (
     <section
-      className="app-surface rounded-2xl border p-5 sm:p-6"
+      className="app-surface app-accent-indigo rounded-2xl border p-5 sm:p-6"
       aria-label="Analytics"
     >
       <div>
@@ -92,6 +92,15 @@ function Analytics({
                 dataKey="expenses"
                 name="Expenses"
                 stroke="var(--app-expense)"
+                strokeWidth={2.5}
+                dot={false}
+                activeDot={{ r: 4 }}
+              />
+              <Line
+                type="monotone"
+                dataKey="netChange"
+                name="Net Change"
+                stroke="var(--app-accent)"
                 strokeWidth={2.5}
                 dot={false}
                 activeDot={{ r: 4 }}

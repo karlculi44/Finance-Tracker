@@ -122,6 +122,7 @@ function createAnalyticsData(
       period: formatPeriod(period, grouping),
       income: 0,
       expenses: 0,
+      netChange: 0,
     });
   }
 
@@ -134,6 +135,8 @@ function createAnalyticsData(
     if (transaction.type === "Income") periodData.income += transaction.amount;
     if (transaction.type === "Expense")
       periodData.expenses += transaction.amount;
+
+    periodData.netChange = periodData.income - periodData.expenses;
   });
 
   return Array.from(dataByPeriod.values());
