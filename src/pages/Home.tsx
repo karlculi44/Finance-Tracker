@@ -1,8 +1,8 @@
 import { useOutletContext } from "react-router-dom";
 import FinancialOverview from "../components/FinancialOverview";
 import QuickInsight from "../components/QuickInsight";
+import RecentTransactions from "../components/RecentTransactions";
 import SummaryCards from "../components/SummaryCards";
-import Transactions from "../components/Transactions";
 import type { AppOutletContext } from "../layout/MainLayout";
 
 function Home() {
@@ -14,10 +14,7 @@ function Home() {
     filteredTransactions,
     remainingBarWidth,
     remainingPercentage,
-    onDateRangeChange,
-    onDelete,
-    onEdit,
-    onViewReport,
+    transactions,
   } = useOutletContext<AppOutletContext>();
 
   return (
@@ -40,14 +37,7 @@ function Home() {
           remainingBarWidth={remainingBarWidth}
         />
       </div>
-      <Transactions
-        transactions={filteredTransactions}
-        onEdit={onEdit}
-        onDelete={onDelete}
-        dateRange={dateRange}
-        onDateRangeChange={onDateRangeChange}
-        onViewReport={onViewReport}
-      />
+      <RecentTransactions transactions={transactions} />
     </div>
   );
 }

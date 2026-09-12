@@ -79,10 +79,16 @@ function TransactionModal({
     setForm(createEmptyTransactionForm());
   };
 
+  const handleClose = () => {
+    onClose();
+    setError(null);
+    setForm(createEmptyTransactionForm());
+  };
+
   if (!isOpen) return null;
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#07120f]/70 p-4">
-      <div className="app-surface w-full max-w-lg rounded-2xl border p-6">
+    <div className="fixed inset-0 z-50 flex items-end justify-center bg-[#07120f]/70 p-0 sm:items-center sm:p-4">
+      <div className="app-surface max-h-[92vh] w-full max-w-lg overflow-y-auto rounded-t-2xl border p-5 sm:rounded-2xl sm:p-6">
         <div className="flex items-start justify-between">
           <div>
             <h2 className="text-xl font-bold app-text">
@@ -93,9 +99,10 @@ function TransactionModal({
             </p>
           </div>
           <button
+            type="button"
             aria-label="Close modal"
             className="rounded-lg p-2 app-faint hover:bg-(--app-surface-muted)"
-            onClick={onClose}
+            onClick={handleClose}
           >
             <X size={18} />
           </button>
@@ -186,7 +193,7 @@ function TransactionModal({
             <button
               type="button"
               className="rounded-xl px-4 py-2.5 text-sm font-semibold app-muted hover:bg-(--app-surface-muted)"
-              onClick={onClose}
+              onClick={handleClose}
             >
               Cancel
             </button>

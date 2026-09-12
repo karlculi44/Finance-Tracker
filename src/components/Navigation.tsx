@@ -1,8 +1,9 @@
-import { BarChart3, Home as HomeIcon } from "lucide-react";
+import { BarChart3, ClipboardList, Home as HomeIcon } from "lucide-react";
 import { NavLink } from "react-router-dom";
 
 const links = [
   { label: "Home", to: "/", icon: HomeIcon },
+  { label: "Transactions", to: "/transactions", icon: ClipboardList },
   { label: "Analytics", to: "/analytics", icon: BarChart3 },
 ];
 

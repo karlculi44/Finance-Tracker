@@ -8,6 +8,7 @@ import {
   saveTransactionsToStorage,
 } from "../utils/transactionStorage";
 import Header from "../components/Header";
+import AddTransactionAction from "../components/AddTransactionAction";
 import TransactionModal from "../components/TransactionModal";
 import ConfirmDeleteModal from "../components/ConfirmDeleteModal";
 import FinancialReportModal from "../components/FinancialReportModal";
@@ -25,6 +26,7 @@ export type AppOutletContext = {
   filteredTransactions: Transaction[];
   remainingBarWidth: number;
   remainingPercentage: number | null;
+  transactions: Transaction[];
   onAddTransaction: () => void;
   onDateRangeChange: (dateRange: DateRangeType) => void;
   onDelete: (transactionId: string) => void;
@@ -198,6 +200,7 @@ function MainLayout() {
           isDarkMode={isDarkMode}
           onToggleTheme={() => setIsDarkMode((current) => !current)}
         />
+        <AddTransactionAction onClick={handleOpenTransactionModal} />
         <div className="mt-8 grid gap-6 lg:mt-10 lg:grid-cols-[180px_minmax(0,1fr)]">
           <Navigation />
           <div className="min-w-0">
@@ -211,6 +214,7 @@ function MainLayout() {
                   filteredTransactions,
                   remainingBarWidth,
                   remainingPercentage,
+                  transactions,
                   onAddTransaction: handleOpenTransactionModal,
                   onDateRangeChange: setDateRange,
                   onDelete: handleDeleteTransaction,

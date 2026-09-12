@@ -31,7 +31,7 @@ function Header({ onAddTransaction, isDarkMode, onToggleTheme }: HeaderProps) {
         </button>
         <button
           onClick={onAddTransaction}
-          className="app-primary-bg inline-flex w-fit items-center justify-center gap-2 rounded-xl px-4 py-3 text-sm font-semibold text-white shadow-sm transition hover:-translate-y-0.5"
+          className="app-primary-bg hidden w-fit items-center justify-center gap-2 rounded-xl px-4 py-3 text-sm font-semibold text-white shadow-sm transition hover:-translate-y-0.5 lg:inline-flex"
         >
           <Plus size={18} strokeWidth={2.5} />
           Add Transaction
