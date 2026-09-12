@@ -17,6 +17,7 @@ import {
 } from "lucide-react";
 import type { Transaction, TransactionCategory } from "../types/Transaction";
 import formatCurrency from "../utils/formatCurrency";
+import { useEffect, useRef, useState } from "react";
 
 interface TransactionItemProps extends Transaction {
   isPositive: boolean;
@@ -52,10 +53,42 @@ function TransactionItem({
   onEdit,
   onDelete,
 }: TransactionItemProps) {
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const menuButtonRef = useRef<HTMLButtonElement>(null);
+  const menuRef = useRef<HTMLDivElement>(null);
   const { icon: CategoryIcon, tone: iconTone } = categoryIcon[category];
+  const transaction = { id, description, category, amount, date, type };
+
+  useEffect(() => {
+    if (!isMobileMenuOpen) return;
+
+    const handlePointerDown = (event: PointerEvent) => {
+      const target = event.target;
+
+      if (
+        target instanceof Node &&
+        !menuButtonRef.current?.contains(target) &&
+        !menuRef.current?.contains(target)
+      ) {
+        setIsMobileMenuOpen(false);
+      }
+    };
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setIsMobileMenuOpen(false);
+    };
+
+    document.addEventListener("pointerdown", handlePointerDown);
+    document.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      document.removeEventListener("pointerdown", handlePointerDown);
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [isMobileMenuOpen]);
 
   return (
-    <div className="group flex items-center gap-3 border-b app-border py-4 last:border-0 sm:gap-4">
+    <div className="group relative flex items-center gap-3 border-b app-border py-4 last:border-0 sm:gap-4">
       <div
         className={`flex size-10 shrink-0 items-center justify-center rounded-xl ${iconTone}`}
       >
@@ -82,7 +115,7 @@ function TransactionItem({
       <div className="hidden items-center gap-1 sm:flex">
         <button
           onClick={() =>
-            onEdit({ id, description, category, amount, date, type })
+            onEdit(transaction)
           }
           aria-label={`Edit ${description}`}
           className="rounded-lg p-2 app-faint transition hover:bg-(--app-surface-muted) hover:text-(--app-text)"
@@ -92,7 +125,7 @@ function TransactionItem({
         <button
           onClick={() => onDelete(id)}
           aria-label={`Delete ${description}`}
-          className="rounded-lg p-2 app-faint transition hover:bg-(--app-danger-soft)] hover:app-danger"
+          className="rounded-lg p-2 app-faint transition hover:bg-(--app-danger-soft) hover:app-danger"
         >
           <Trash2 size={15} />
         </button>
@@ -105,11 +138,44 @@ function TransactionItem({
         </time>
       </div>
       <button
+        type="button"
+        ref={menuButtonRef}
         aria-label={`More options for ${description}`}
-        className="rounded-lg p-2 text-slate-300 sm:hidden"
+        aria-expanded={isMobileMenuOpen}
+        onClick={() => setIsMobileMenuOpen((isOpen) => !isOpen)}
+        className="rounded-lg p-2 app-faint transition hover:bg-(--app-surface-muted) hover:text-(--app-text) sm:hidden"
       >
         <MoreHorizontal size={17} />
       </button>
+      {isMobileMenuOpen && (
+        <div
+          ref={menuRef}
+          className="app-surface fixed bottom-20 right-4 z-50 min-w-36 rounded-xl border p-1 shadow-lg sm:hidden"
+        >
+          <button
+            type="button"
+            onClick={() => {
+              setIsMobileMenuOpen(false);
+              onEdit(transaction);
+            }}
+            className="flex w-full items-center gap-2 rounded-lg px-3 py-2 text-left text-sm font-semibold app-text hover:bg-(--app-surface-muted)"
+          >
+            <Pencil size={15} aria-hidden="true" />
+            Edit
+          </button>
+          <button
+            type="button"
+            onClick={() => {
+              setIsMobileMenuOpen(false);
+              onDelete(id);
+            }}
+            className="flex w-full items-center gap-2 rounded-lg px-3 py-2 text-left text-sm font-semibold app-danger hover:bg-(--app-danger-soft)"
+          >
+            <Trash2 size={15} aria-hidden="true" />
+            Delete
+          </button>
+        </div>
+      )}
     </div>
   );
 }

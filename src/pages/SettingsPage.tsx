@@ -112,7 +112,7 @@ function SettingsPage() {
         <button
           type="button"
           onClick={() => setIsResetModalOpen(true)}
-          className="mt-4 inline-flex min-h-11 items-center gap-2 rounded-xl bg-[var(--app-danger)] px-4 py-2.5 text-sm font-semibold text-white transition hover:opacity-90"
+          className="mt-4 inline-flex min-h-11 items-center gap-2 rounded-xl bg-(--app-danger) px-4 py-2.5 text-sm font-semibold text-white transition hover:opacity-90"
         >
           <Trash2 size={16} aria-hidden="true" />
           Reset all data
