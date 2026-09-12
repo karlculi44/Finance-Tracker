@@ -7,8 +7,6 @@ export function getTransactionsFromStorage(): Transaction[] {
     TRANSACTIONS_STORAGE_KEY,
   );
 
-  localStorage.removeItem("transactions");
-
   if (!storedTransactions) return [];
 
   try {

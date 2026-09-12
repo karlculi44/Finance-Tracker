@@ -43,7 +43,7 @@ function ConfirmDeleteModal({
           <button
             type="button"
             aria-label="Close delete confirmation"
-            className="rounded-lg p-2 app-faint hover:bg-[var(--app-surface-muted)]"
+            className="rounded-lg p-2 app-faint hover:bg-(--app-surface-muted)"
             onClick={onClose}
           >
             <X size={18} />
@@ -52,14 +52,14 @@ function ConfirmDeleteModal({
         <div className="mt-6 flex justify-end gap-3">
           <button
             type="button"
-            className="rounded-xl px-4 py-2.5 text-sm font-semibold app-muted hover:bg-[var(--app-surface-muted)]"
+            className="rounded-xl px-4 py-2.5 text-sm font-semibold app-muted hover:bg-(--app-surface-muted)"
             onClick={onClose}
           >
             Cancel
           </button>
           <button
             type="button"
-            className="rounded-xl bg-[var(--app-danger)] px-4 py-2.5 text-sm font-semibold text-white transition hover:opacity-90"
+            className="rounded-xl bg-(--app-danger) px-4 py-2.5 text-sm font-semibold text-white transition hover:opacity-90"
             onClick={onConfirm}
           >
             Delete

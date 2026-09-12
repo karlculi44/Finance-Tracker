@@ -11,7 +11,7 @@ function Navigation() {
   return (
     <nav
       aria-label="Primary navigation"
-      className="fixed inset-x-0 bottom-0 z-40 border-t app-border app-surface px-4 py-2 lg:static lg:border-0 lg:bg-transparent lg:px-0 lg:py-0 lg:shadow-none"
+      className="fixed inset-x-0 bottom-0 z-40 border-t app-border bg-(--app-surface) px-4 py-2 shadow-(--app-shadow) lg:static lg:border-0 lg:bg-transparent lg:px-0 lg:py-0 lg:shadow-none"
     >
       <div className="mx-auto flex max-w-md items-center justify-around gap-2 lg:sticky lg:top-8 lg:block lg:max-w-none lg:space-y-2">
         {links.map(({ label, to, icon: Icon }) => (

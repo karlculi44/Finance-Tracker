@@ -57,7 +57,7 @@ function ResetDataModal({
           <button
             type="button"
             aria-label="Close reset data confirmation"
-            className="rounded-lg p-2 app-faint hover:bg-[var(--app-surface-muted)]"
+            className="rounded-lg p-2 app-faint hover:bg-(--app-surface-muted)"
             onClick={handleClose}
           >
             <X size={18} aria-hidden="true" />
@@ -79,7 +79,7 @@ function ResetDataModal({
         <div className="mt-6 flex justify-end gap-3">
           <button
             type="button"
-            className="rounded-xl px-4 py-2.5 text-sm font-semibold app-muted hover:bg-[var(--app-surface-muted)]"
+            className="rounded-xl px-4 py-2.5 text-sm font-semibold app-muted hover:bg-(--app-surface-muted)"
             onClick={handleClose}
           >
             Cancel
@@ -87,7 +87,7 @@ function ResetDataModal({
           <button
             type="button"
             disabled={!canConfirm}
-            className="rounded-xl bg-[var(--app-danger)] px-4 py-2.5 text-sm font-semibold text-white transition hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-40"
+            className="rounded-xl bg-(--app-danger) px-4 py-2.5 text-sm font-semibold text-white transition hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-40"
             onClick={handleConfirm}
           >
             Delete all data
