@@ -2,7 +2,7 @@ import type {
   TransactionCategory,
   TransactionFilterType,
 } from "../types/Transaction";
-import type { DateRangeType } from "../types/FinanceSummary";
+import { dateRangeOptions, type DateRangeType } from "../types/FinanceSummary";
 
 type CategoryFilter = "All" | TransactionCategory;
 
@@ -40,16 +40,6 @@ function TransactionFilters({
     "Salary",
     "Other",
   ];
-  const dateRanges: DateRangeType[] = [
-    "All Time",
-    "Today",
-    "Last 3 Days",
-    "This Week",
-    "Last 2 Weeks",
-    "This Month",
-    "Last 3 Months",
-  ];
-
   return (
     <div className="flex flex-wrap items-end gap-2 text-xs font-semibold">
       <label className="grid gap-1 app-muted">
@@ -60,7 +50,7 @@ function TransactionFilters({
           }
           className="app-input rounded-lg border px-3 py-2 font-medium outline-none transition"
         >
-          {dateRanges.map((dateRange) => (
+          {dateRangeOptions.map((dateRange) => (
             <option key={dateRange} value={dateRange}>
               {dateRange}
             </option>

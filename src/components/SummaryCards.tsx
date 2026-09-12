@@ -45,7 +45,7 @@ function SummaryCards({
 
   return (
     <section
-      className="grid gap-4 md:grid-cols-3 lg:grid-cols-1"
+      className="grid gap-4 sm:grid-cols-3"
       aria-label="Financial summary"
     >
       {summaryCardsData.map(({ label, value, detail, icon, tone, accent }) => (

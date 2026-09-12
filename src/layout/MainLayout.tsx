@@ -1,22 +1,36 @@
 import { useEffect, useState } from "react";
 import { toast, ToastContainer } from "react-toastify";
 import type { TransactionForm, Transaction } from "../types/Transaction";
-import type { DateRangeType } from "../types/FinanceSummary";
+import { dateRangeOptions, type DateRangeType } from "../types/FinanceSummary";
 import { v4 as uuidv4 } from "uuid";
 import {
   getTransactionsFromStorage,
   saveTransactionsToStorage,
 } from "../utils/transactionStorage";
-import SummaryCards from "../components/SummaryCards";
 import Header from "../components/Header";
-import Transactions from "../components/Transactions";
-import QuickInsight from "../components/QuickInsight";
 import TransactionModal from "../components/TransactionModal";
 import ConfirmDeleteModal from "../components/ConfirmDeleteModal";
 import FinancialReportModal from "../components/FinancialReportModal";
-import Analytics from "../components/Analytics";
+import Navigation from "../components/Navigation";
+import { Outlet } from "react-router-dom";
 
 const THEME_STORAGE_KEY = "expense-tracker-theme";
+const DATE_RANGE_STORAGE_KEY = "expense-tracker-date-range";
+
+export type AppOutletContext = {
+  balance: number;
+  dateRange: DateRangeType;
+  filteredExpenses: number;
+  filteredIncome: number;
+  filteredTransactions: Transaction[];
+  remainingBarWidth: number;
+  remainingPercentage: number | null;
+  onAddTransaction: () => void;
+  onDateRangeChange: (dateRange: DateRangeType) => void;
+  onDelete: (transactionId: string) => void;
+  onEdit: (transaction: Transaction) => void;
+  onViewReport: () => void;
+};
 
 function getDateRangeStart(dateRange: DateRangeType, currentDate: Date) {
   const startDate = new Date(currentDate);
@@ -46,6 +60,14 @@ function getDateRangeStart(dateRange: DateRangeType, currentDate: Date) {
   }
 }
 
+function getStoredDateRange(): DateRangeType {
+  const storedDateRange = localStorage.getItem(DATE_RANGE_STORAGE_KEY);
+
+  return dateRangeOptions.includes(storedDateRange as DateRangeType)
+    ? (storedDateRange as DateRangeType)
+    : "All Time";
+}
+
 function MainLayout() {
   const [isTransactionModalOpen, setIsTransactionModalOpen] = useState(false);
   const [isConfirmDeleteModalOpen, setIsConfirmDeleteModalOpen] =
@@ -57,7 +79,7 @@ function MainLayout() {
   );
   const [transactionToEdit, setTransactionToEdit] =
     useState<Transaction | null>(null);
-  const [dateRange, setDateRange] = useState<DateRangeType>("All Time");
+  const [dateRange, setDateRange] = useState<DateRangeType>(getStoredDateRange);
   const [isReportOpen, setIsReportOpen] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(
     () => localStorage.getItem(THEME_STORAGE_KEY) === "dark",
@@ -66,6 +88,10 @@ function MainLayout() {
   useEffect(() => {
     localStorage.setItem(THEME_STORAGE_KEY, isDarkMode ? "dark" : "light");
   }, [isDarkMode]);
+
+  useEffect(() => {
+    localStorage.setItem(DATE_RANGE_STORAGE_KEY, dateRange);
+  }, [dateRange]);
 
   const totalIncome = transactions.reduce(
     (total, transaction) =>
@@ -166,39 +192,34 @@ function MainLayout() {
   return (
     <main className={`app-shell ${isDarkMode ? "dark-mode" : ""}`}>
       <ToastContainer position="top-center" autoClose={3000} />
-      <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8 lg:py-12">
+      <div className="mx-auto max-w-7xl px-4 py-8 pb-24 sm:px-6 lg:px-8 lg:py-12 lg:pb-12">
         <Header
           onAddTransaction={handleOpenTransactionModal}
           isDarkMode={isDarkMode}
           onToggleTheme={() => setIsDarkMode((current) => !current)}
         />
-        <div className="mt-8 grid gap-6 lg:mt-10 lg:grid-cols-[minmax(0,1fr)_300px]">
-          <div className="order-2 space-y-6 lg:order-1 lg:col-start-1 lg:row-start-1">
-            <Transactions
-              transactions={filteredTransactions}
-              onEdit={handleEditTransaction}
-              onDelete={handleDeleteTransaction}
-              dateRange={dateRange}
-              onDateRangeChange={setDateRange}
-              onViewReport={() => setIsReportOpen(true)}
-            />
-            <Analytics
-              transactions={filteredTransactions}
-              dateRange={dateRange}
+        <div className="mt-8 grid gap-6 lg:mt-10 lg:grid-cols-[180px_minmax(0,1fr)]">
+          <Navigation />
+          <div className="min-w-0">
+            <Outlet
+              context={
+                {
+                  balance,
+                  dateRange,
+                  filteredExpenses,
+                  filteredIncome,
+                  filteredTransactions,
+                  remainingBarWidth,
+                  remainingPercentage,
+                  onAddTransaction: handleOpenTransactionModal,
+                  onDateRangeChange: setDateRange,
+                  onDelete: handleDeleteTransaction,
+                  onEdit: handleEditTransaction,
+                  onViewReport: () => setIsReportOpen(true),
+                } satisfies AppOutletContext
+              }
             />
           </div>
-          <aside className="order-1 space-y-6 p-0 lg:order-2 lg:col-start-2 lg:row-start-1">
-            <QuickInsight
-              remainingPercentage={remainingPercentage}
-              remainingBarWidth={remainingBarWidth}
-            />
-            <SummaryCards
-              balance={balance}
-              totalIncome={filteredIncome}
-              totalExpenses={filteredExpenses}
-              dateRange={dateRange}
-            />
-          </aside>
         </div>
 
         <TransactionModal

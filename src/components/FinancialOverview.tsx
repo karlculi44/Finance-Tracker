@@ -1,3 +1,4 @@
+import { ArrowRight } from "lucide-react";
 import {
   CartesianGrid,
   Legend,
@@ -8,59 +9,50 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
+import { Link } from "react-router-dom";
 import type { DateRangeType } from "../types/FinanceSummary";
 import type { Transaction } from "../types/Transaction";
 import createAnalyticsData from "../utils/analyticsData";
 import formatCurrency from "../utils/formatCurrency";
 
-function Analytics({
+function FinancialOverview({
   transactions,
   dateRange,
-  title = "Income vs Expenses",
-  description = "Income and expenses over time",
 }: {
   transactions: Transaction[];
   dateRange: DateRangeType;
-  title?: string;
-  description?: string;
 }) {
   const data = createAnalyticsData(transactions, dateRange);
 
   return (
-    <section
-      className="app-surface rounded-2xl border p-5 sm:p-6"
-      aria-label="Analytics"
+    <Link
+      to="/analytics"
+      aria-label="View detailed financial analytics"
+      className="app-surface block rounded-2xl border p-5 transition hover:-translate-y-0.5 hover:border-(--app-primary) sm:p-6"
     >
-      <div>
-        <h2 className="text-lg font-bold app-text">{title}</h2>
-        <p className="mt-1 text-sm app-muted">{description}</p>
+      <div className="flex items-start justify-between gap-4">
+        <div>
+          <h2 className="text-lg font-bold app-text">Financial Overview</h2>
+          <p className="mt-1 text-sm app-muted">{dateRange}</p>
+        </div>
+        <span className="inline-flex items-center gap-1 text-sm font-semibold app-primary">
+          View Analytics <ArrowRight size={16} aria-hidden="true" />
+        </span>
       </div>
       {data.length > 0 ? (
-        <div className="mt-6 h-72 w-full">
+        <div className="mt-5 h-48 w-full">
           <ResponsiveContainer width="100%" height="100%">
             <LineChart
               data={data}
-              margin={{ top: 8, right: 8, left: 0, bottom: 4 }}
+              margin={{ top: 8, right: 4, left: -22, bottom: 0 }}
             >
               <CartesianGrid
                 stroke="var(--app-border)"
                 strokeDasharray="3 3"
                 vertical={false}
               />
-              <XAxis
-                dataKey="period"
-                axisLine={false}
-                tickLine={false}
-                tick={{ fill: "var(--app-muted)", fontSize: 12 }}
-                minTickGap={24}
-              />
-              <YAxis
-                axisLine={false}
-                tickLine={false}
-                tick={{ fill: "var(--app-muted)", fontSize: 12 }}
-                tickFormatter={(value: number) => formatCurrency(value)}
-                width={78}
-              />
+              <XAxis dataKey="period" hide />
+              <YAxis hide />
               <Tooltip
                 contentStyle={{
                   backgroundColor: "var(--app-surface)",
@@ -68,14 +60,13 @@ function Analytics({
                   borderRadius: "12px",
                   color: "var(--app-text)",
                 }}
-                labelStyle={{ color: "var(--app-muted)" }}
                 formatter={(value, name) => [
                   formatCurrency(Number(value)),
                   name,
                 ]}
               />
               <Legend
-                wrapperStyle={{ color: "var(--app-text)", fontSize: "13px" }}
+                wrapperStyle={{ color: "var(--app-text)", fontSize: "12px" }}
               />
               <Line
                 type="monotone"
@@ -84,7 +75,6 @@ function Analytics({
                 stroke="var(--app-income)"
                 strokeWidth={2.5}
                 dot={false}
-                activeDot={{ r: 4 }}
               />
               <Line
                 type="monotone"
@@ -93,18 +83,17 @@ function Analytics({
                 stroke="var(--app-expense)"
                 strokeWidth={2.5}
                 dot={false}
-                activeDot={{ r: 4 }}
               />
             </LineChart>
           </ResponsiveContainer>
         </div>
       ) : (
-        <p className="mt-8 rounded-xl border border-dashed app-border px-4 py-10 text-center text-sm app-muted">
-          No transactions to display for this period.
+        <p className="mt-5 rounded-xl border border-dashed app-border px-4 py-8 text-center text-sm app-muted">
+          Add transactions to see your cash flow.
         </p>
       )}
-    </section>
+    </Link>
   );
 }
 
-export default Analytics;
+export default FinancialOverview;

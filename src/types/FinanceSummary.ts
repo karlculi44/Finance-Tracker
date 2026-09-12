@@ -9,6 +9,16 @@ type DateRangeType =
   | "This Month"
   | "Last 3 Months";
 
+const dateRangeOptions: DateRangeType[] = [
+  "All Time",
+  "Today",
+  "Last 3 Days",
+  "This Week",
+  "Last 2 Weeks",
+  "This Month",
+  "Last 3 Months",
+];
+
 type SummaryCardsDataType = {
   label: string;
   value: number;
@@ -18,4 +28,5 @@ type SummaryCardsDataType = {
   accent: string;
 };
 
+export { dateRangeOptions };
 export type { DateRangeType, SummaryCardsDataType };
