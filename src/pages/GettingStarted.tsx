@@ -41,7 +41,7 @@ function GettingStarted({ onComplete }: { onComplete: () => void }) {
                 <Sparkles size={26} aria-hidden="true" />
               </div>
               <p className="mt-6 text-xs font-semibold uppercase tracking-[0.18em] app-primary">
-                Expense Tracker
+                Finance Tracker
               </p>
               <h1 className="mt-3 text-3xl font-bold tracking-tight app-text">
                 Let&apos;s get started
